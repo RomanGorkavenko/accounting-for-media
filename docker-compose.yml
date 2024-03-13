@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  server:
+    build:
+      context: C:\Users\482\Desktop\accounting-for-media\discovery-service\
+    container_name: discovery-service
+    ports:
+      - '8761:8761'
+
+  client:
+    build:
+      context: C:\Users\482\Desktop\accounting-for-media\user-service\
+    container_name: user-service
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users_db?currentSchema=users_data
+      - SPRING_DATASOURCE_USERNAME=userdata
+      - SPRING_DATASOURCE_PASSWORD=userdata
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+    ports:
+      - '8081:8081'
+
+
+  postgres:
+    image: postgres:15.6-alpine3.19
+    container_name: users_db
+    environment:
+      POSTGRES_DB: "users_db"
+      POSTGRES_USER: "userdata"
+      POSTGRES_PASSWORD: "userdata"
+#      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - C:\Users\482\Desktop\accounting-for-media\user-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
+#      - users-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+#volumes:
+#  users-data:
