@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.controller.UserController;
-import ru.media.accounting.api.controller.mappers.UserMapper;
-import ru.media.accounting.api.dto.UserRequest;
-import ru.media.accounting.api.dto.UserResponse;
+import ru.media.accounting.api.mappers.UserMapper;
+import ru.media.accounting.dto.UserRequest;
+import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.model.User;
 import ru.media.accounting.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserControllerImpl implements UserController {
 
@@ -19,14 +19,15 @@ public class UserControllerImpl implements UserController {
     private final UserMapper userMapper;
 
     @Override
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @Override
-    public ResponseEntity<UserResponse> findByEmail(String email) {
+    @GetMapping("/mail/{email}")
+    public ResponseEntity<UserResponse> findByEmail(@PathVariable("email") String email) {
         return null;
     }
 

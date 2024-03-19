@@ -1,9 +1,8 @@
 package ru.media.accounting.api.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import ru.media.accounting.api.dto.UserRequest;
-import ru.media.accounting.api.dto.UserResponse;
+import ru.media.accounting.dto.UserRequest;
+import ru.media.accounting.dto.UserResponse;
 
 public interface UserController {
 

@@ -2,13 +2,11 @@ package ru.media.accounting.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.media.accounting.api.dto.UserRequest;
-import ru.media.accounting.api.dto.UserResponse;
+import ru.media.accounting.dto.UserRequest;
 import ru.media.accounting.model.Role;
 import ru.media.accounting.model.User;
 import ru.media.accounting.repository.RoleRepository;
 import ru.media.accounting.repository.UserRepository;
-import ru.media.accounting.api.controller.mappers.UserMapper;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -22,7 +20,7 @@ public class UserService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("Пользователь с " + username + " не найден"));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь с username = " + username + " не найден"));
     }
 
     public User save(UserRequest userRequest) {

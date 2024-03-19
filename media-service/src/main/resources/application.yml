@@ -1,22 +1,22 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:55322/users_db?currentSchema=users_data
-    username: userdata
-    password: userdata
+    url: jdbc:postgresql://localhost:55323/media_db?currentSchema=media
+    username: mediadata
+    password: mediadata
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
   application:
-    name: user-service
+    name: media-service
   liquibase:
     change-log: classpath:/liquibase/db.changelog.yml
     enabled: true
-    default-schema: users_data
+    default-schema: media
 
 eureka:
   client:

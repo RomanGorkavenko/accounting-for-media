@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15.6-alpine3.19
+    container_name: media-postgres
+    environment:
+      POSTGRES_DB: "media_db"
+      POSTGRES_USER: "mediadata"
+      POSTGRES_PASSWORD: "mediadata"
+#      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - .\db-init:/docker-entrypoint-initdb.d
+#      - media-data:/var/lib/postgresql/data
+    ports:
+      - "55323:5432"
+
+#volumes:
+#  media-data:

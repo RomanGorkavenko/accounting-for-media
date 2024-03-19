@@ -1,4 +1,4 @@
-package ru.media.accounting.api.dto;
+package ru.media.accounting.dto;
 
 import lombok.Data;
 
@@ -10,5 +10,4 @@ public class UserResponse {
     private String lastname;
     private String username;
     private String email;
-    private String password;
 }

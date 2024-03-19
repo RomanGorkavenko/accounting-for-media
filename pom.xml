@@ -21,6 +21,7 @@
         <module>user-service</module>
         <module>gateway-service</module>
         <module>entity-service</module>
+        <module>media-service</module>
     </modules>
 
     <properties>

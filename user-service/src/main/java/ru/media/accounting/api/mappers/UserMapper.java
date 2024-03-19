@@ -1,8 +1,8 @@
-package ru.media.accounting.api.controller.mappers;
+package ru.media.accounting.api.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.media.accounting.api.dto.UserResponse;
+import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.model.User;
 
 @Mapper(componentModel = "spring")

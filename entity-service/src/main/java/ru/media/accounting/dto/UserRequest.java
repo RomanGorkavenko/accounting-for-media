@@ -1,4 +1,4 @@
-package ru.media.accounting.api.dto;
+package ru.media.accounting.dto;
 
 import lombok.Data;
 
