@@ -3,6 +3,7 @@ package ru.media.accounting.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.dto.UserRequest;
+import ru.media.accounting.dto.UserRequestUpdate;
 import ru.media.accounting.model.Role;
 import ru.media.accounting.model.User;
 import ru.media.accounting.repository.RoleRepository;
@@ -23,6 +24,11 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("Пользователь с username = " + username + " не найден"));
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("Пользователь с email = " + email + " не найден"));
+    }
+
     public User save(UserRequest userRequest) {
         User user = new User(userRequest.getUsername(), userRequest.getEmail(), userRequest.getPassword());
         Role role = roleRepository.findByTitle("ROLE_USER");
@@ -30,5 +36,16 @@ public class UserService {
         user.setRoles(roles);
         return userRepository.save(user);
     }
+
+    public User update(UserRequestUpdate userRequestUpdate) {
+        User user = findByUsername(userRequestUpdate.getUsername());
+        user.setFirstname(userRequestUpdate.getFirstname());
+        user.setLastname(userRequestUpdate.getLastname());
+        user.setUsername(userRequestUpdate.getUsername());
+        user.setEmail(userRequestUpdate.getEmail());
+        return userRepository.save(user);
+    }
+
+
 
 }

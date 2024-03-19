@@ -28,7 +28,8 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/mail/{email}")
     public ResponseEntity<UserResponse> findByEmail(@PathVariable("email") String email) {
-        return null;
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @Override

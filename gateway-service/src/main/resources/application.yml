@@ -14,8 +14,29 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-      routes[0]:
-        id: user/**
-        uri: lb://user-service
-        predicates[0]: Path=/api/user/**
-        predicates[1]: Method=GET
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+          filters:
+            - RewritePath=/user/(?<path>.*), /$\{path}
+
+        - id: media-service
+          uri: lb://media-service
+          predicates:
+            - Path=/media/**
+          filters:
+            - RewritePath=/media/(?<path>.*), /$\{path}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: user
+        url: /user/v3/api-docs
+      - name: media
+        url: /media/v3/api-docs

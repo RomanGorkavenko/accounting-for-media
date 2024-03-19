@@ -18,9 +18,13 @@ spring:
     enabled: true
     default-schema: media
 
+security:
+  jwt:
+    secret: eWdha2pyaGlnaUtKSkhJT1VIa2pib2xiNDU2Mjg1Nm5ianlna2pLSk5LSktKTkhOamtuamIsbW0uO3A7Ow==
+    access: 3600000
+    refresh: 2592000000
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-  instance:
-    instance-id: ${spring.application.name}:${random.uuid}

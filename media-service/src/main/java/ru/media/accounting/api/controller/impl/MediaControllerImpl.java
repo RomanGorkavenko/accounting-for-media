@@ -1,7 +1,7 @@
 package ru.media.accounting.api.controller.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +23,14 @@ public class MediaControllerImpl implements MediaController {
 
     @Override
     @GetMapping("/user/{username}")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#username)")
     public List<MediaResponse> getMediaByUserId(@PathVariable("username") String username) {
-        return mediaMapper.toDto(mediaService.getByUserId(username));
+        return mediaMapper.toDto(mediaService.findByUsername(username));
     }
 
     @Override
-    @GetMapping
-    public String getMedia() {
-        return "Hello";
+    public MediaResponse getMediaByNumber(Long number) {
+        return null;
     }
 
 

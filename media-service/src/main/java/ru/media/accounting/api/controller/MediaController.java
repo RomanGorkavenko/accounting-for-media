@@ -9,5 +9,7 @@ public interface MediaController {
 
     List<MediaResponse> getMediaByUserId(String username);
 
-    String getMedia();
+    MediaResponse getMediaByNumber(Long number);
+
+
 }
