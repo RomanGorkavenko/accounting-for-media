@@ -3,6 +3,7 @@ package ru.media.accounting.api.controller.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.spring.boot.aop.annotations.Timer;
 import ru.media.accounting.api.controller.MediaController;
 import ru.media.accounting.api.mappers.MediaMapper;
 import ru.media.accounting.dto.MediaResponse;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Timer
 @RequestMapping("/api/media")
 public class MediaControllerImpl implements MediaController {
 
