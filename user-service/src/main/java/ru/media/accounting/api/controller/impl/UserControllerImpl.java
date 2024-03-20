@@ -13,12 +13,14 @@ import ru.media.accounting.dto.UserRequestUpdate;
 import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.model.User;
 import ru.media.accounting.service.UserService;
+import ru.spring.boot.starter.aop.annotations.Timer;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@Timer
 @Tag(name = "User Controller", description = "User API")
 public class UserControllerImpl implements UserController {
 
@@ -28,7 +30,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/name/{username}")
-    @PreAuthorize("@customSecurityExpression.canAccessUserByUsername(#username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserByUsername(#username)")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
         return ResponseEntity.ok(userMapper.toDto(user));
@@ -37,7 +39,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/mail/{email}")
-    @PreAuthorize("@customSecurityExpression.canAccessUserByEmail(#email)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserByEmail(#email)")
     public ResponseEntity<UserResponse> findByEmail(@PathVariable("email") String email) {
         User user = userService.findByEmail(email);
         return ResponseEntity.ok(userMapper.toDto(user));
@@ -46,7 +48,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
     public ResponseEntity<UserResponse> save(@RequestBody UserRequest userRequest) {
         User user = userService.save(userRequest);
         return ResponseEntity.ok(userMapper.toDto(user));
@@ -55,7 +57,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN(#userRequestUpdate.username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequestUpdate.username)")
     public ResponseEntity<UserResponse> update(@RequestBody UserRequestUpdate userRequestUpdate) {
         User user = userService.update(userRequestUpdate);
         return ResponseEntity.ok(userMapper.toDto(user));
@@ -64,7 +66,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN(#username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#username)")
     public ResponseEntity<String> delete(String username) {
         userService.delete(username);
         return new ResponseEntity<>("Пользователь с username = \"" + username + "\" успешно удален.", HttpStatus.OK);
@@ -73,7 +75,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN()")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     public List<UserResponse> findAll() {
         return userMapper.toDto(userService.findAll());
     }

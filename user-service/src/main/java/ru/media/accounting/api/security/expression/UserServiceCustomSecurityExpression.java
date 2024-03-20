@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 /**
  * Сервис для проверки авторизованности пользователя, и его прав доступа.
  */
-@Service("customSecurityExpression")
+@Service("userServiceCustomSecurityExpression")
 @RequiredArgsConstructor
 public class UserServiceCustomSecurityExpression {
 

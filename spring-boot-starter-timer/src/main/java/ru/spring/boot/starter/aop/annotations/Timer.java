@@ -1,4 +1,4 @@
-package ru.gb.spring.boot.aop.annotations;
+package ru.spring.boot.starter.aop.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

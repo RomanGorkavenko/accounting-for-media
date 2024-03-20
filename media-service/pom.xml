@@ -29,7 +29,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>ru.gb.spring.boot</groupId>
+            <groupId>ru.spring.boot.starter</groupId>
             <artifactId>spring-boot-starter-timer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

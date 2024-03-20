@@ -1,4 +1,4 @@
-package ru.gb.spring.boot.aop;
+package ru.spring.boot.starter.aop;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +17,11 @@ public class TimerAspect {
 
     private final TimerProperties properties;
 
-    @Pointcut("within(@ru.gb.spring.boot.aop.annotations.* *)")
+    @Pointcut("within(@ru.spring.boot.starter.aop.annotations.* *)")
     public void beansAnnotatedWith() {
     }
 
-    @Pointcut("@annotation(ru.gb.spring.boot.aop.annotations.Timer)")
+    @Pointcut("@annotation(ru.spring.boot.starter.aop.annotations.Timer)")
     public void methodsAnnotatedWithTimer() {
     }
 

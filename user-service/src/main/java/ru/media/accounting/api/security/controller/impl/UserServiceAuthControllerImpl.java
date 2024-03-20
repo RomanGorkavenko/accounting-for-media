@@ -31,14 +31,14 @@ public class UserServiceAuthControllerImpl implements UserServiceAuthController 
 
     @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/register")
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
     public UserResponse register(@RequestBody UserRequest userRequest) {
         return userMapper.toDto(userService.save(userRequest));
     }
 
     @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/refresh")
-    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN()")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     public JwtResponse refresh(@RequestBody String refreshToken) {
         return authService.refresh(refreshToken);
     }

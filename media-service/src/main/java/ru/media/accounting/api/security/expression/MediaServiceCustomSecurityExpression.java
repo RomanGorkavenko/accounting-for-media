@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.media.accounting.api.feign.UserFeignClient;
 import ru.media.accounting.api.security.MediaServiceJwtEntity;
 
-@Service("customSecurityExpression")
+@Service("mediaServiceCustomSecurityExpression")
 @RequiredArgsConstructor
 public class MediaServiceCustomSecurityExpression {
 

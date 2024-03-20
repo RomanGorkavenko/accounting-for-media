@@ -1,4 +1,4 @@
-package ru.gb.spring.boot.aop;
+package ru.spring.boot.starter.aop;
 
 import lombok.Data;
 import org.slf4j.event.Level;

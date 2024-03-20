@@ -32,4 +32,4 @@ eureka:
 aspect:
   timer:
     enabled: true
-    log-level: info
+    log-level: warn
