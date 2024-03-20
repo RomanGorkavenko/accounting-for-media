@@ -10,8 +10,6 @@ import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.dto.auth.JwtRequest;
 import ru.media.accounting.dto.auth.JwtResponse;
 
-import java.awt.print.Book;
-
 public interface AuthController {
 
     @Operation(summary = "Аутентификация", description = "Получение токена")
