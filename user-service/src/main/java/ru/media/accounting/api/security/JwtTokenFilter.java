@@ -13,6 +13,10 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+/**
+ * Фильтр для обработки JWT токена. До авторизации.
+ * Для авторизации пользователя.
+ */
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 

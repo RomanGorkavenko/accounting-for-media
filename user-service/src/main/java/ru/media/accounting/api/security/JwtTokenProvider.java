@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для работы с токенами.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -94,17 +97,6 @@ public class JwtTokenProvider {
                 .build()
                 .parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
-    }
-
-    private String getId(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("id")
-                .toString();
     }
 
     private String getUsername(String token) {

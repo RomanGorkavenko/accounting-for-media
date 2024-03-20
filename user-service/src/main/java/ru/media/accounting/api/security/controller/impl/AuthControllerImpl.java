@@ -2,6 +2,7 @@ package ru.media.accounting.api.security.controller.impl;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.mappers.UserMapper;
 import ru.media.accounting.api.security.controller.AuthController;
@@ -28,12 +29,16 @@ public class AuthControllerImpl implements AuthController {
         return authService.login(loginRequest);
     }
 
+    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/register")
+    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
     public UserResponse register(@RequestBody UserRequest userRequest) {
         return userMapper.toDto(userService.save(userRequest));
     }
 
+    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/refresh")
+    @PreAuthorize("@customSecurityExpression.canAccessUserROLE_ADMIN()")
     public JwtResponse refresh(@RequestBody String refreshToken) {
         return authService.refresh(refreshToken);
     }

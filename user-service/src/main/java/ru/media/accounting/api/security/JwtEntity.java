@@ -13,12 +13,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Представление User для Spring Security.
+ * Предоставляет информацию о пользователе.
+ */
 @Data
 @AllArgsConstructor
 public class JwtEntity implements UserDetails {
 
     private User user;
 
+    /**
+     * Преобразование роли в полномочия Spring Security.
+     * @return список полномочий.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();
@@ -39,6 +47,10 @@ public class JwtEntity implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUsername();
+    }
+
+    public String getEmail() {
+        return user.getEmail();
     }
 
     @Override

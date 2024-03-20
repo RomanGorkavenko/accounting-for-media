@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import ru.media.accounting.model.User;
 import ru.media.accounting.service.UserService;
 
+/**
+ * Сервис для авторизации пользователя.
+ */
 @Service
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {

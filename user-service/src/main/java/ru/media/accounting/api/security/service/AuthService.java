@@ -19,7 +19,11 @@ public class AuthService {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
-
+    /**
+     * Проверка авторизации пользователя.
+     * @param loginRequest - запрос на авторизацию
+     * @return {@link JwtResponse} dto - ответ на запрос
+     */
     public JwtResponse login(JwtRequest loginRequest) {
         JwtResponse jwtResponse = new JwtResponse();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
@@ -34,6 +38,11 @@ public class AuthService {
         return jwtResponse;
     }
 
+    /**
+     * Обновление токена.
+     * @param refreshToken - токен для обновления.
+     * @return {@link JwtResponse} dto - ответ на запрос
+     */
     public JwtResponse refresh(String refreshToken) {
         return jwtTokenProvider.refreshUserTokens(refreshToken);
     }

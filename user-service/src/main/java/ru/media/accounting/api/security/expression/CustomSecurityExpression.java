@@ -8,19 +8,60 @@ import org.springframework.stereotype.Service;
 import ru.media.accounting.api.security.JwtEntity;
 import ru.media.accounting.service.UserService;
 
+import java.util.NoSuchElementException;
+
+/**
+ * Сервис для проверки авторизованности пользователя, и его прав доступа.
+ */
 @Service("customSecurityExpression")
 @RequiredArgsConstructor
 public class CustomSecurityExpression {
 
     private final UserService userService;
 
-    public boolean canAccessUser(String username) {
+    public boolean canAccessUserByUsername(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new NoSuchElementException("Пользователь с username = " + username + " не найден");
+        }
 
         JwtEntity user = (JwtEntity) authentication.getPrincipal();
         String currentUsername = user.getUsername();
 
         return currentUsername.equals(username) || hasAnyRole(authentication, "ROLE_ADMIN");
+
+    }
+
+    public boolean canAccessUserByEmail(String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new NoSuchElementException("Пользователь с email = " + email + " не найден");
+        }
+
+        JwtEntity user = (JwtEntity) authentication.getPrincipal();
+        String currentEmail = user.getEmail();
+
+        return currentEmail.equals(email) || hasAnyRole(authentication, "ROLE_ADMIN");
+
+    }
+
+    public boolean canAccessUserROLE_ADMIN(String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new NoSuchElementException("Пользователь с username = " + username + " не найден");
+        }
+
+        return hasAnyRole(authentication, "ROLE_ADMIN");
+
+    }
+
+    public boolean canAccessUserROLE_ADMIN() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return hasAnyRole(authentication, "ROLE_ADMIN");
 
     }
 

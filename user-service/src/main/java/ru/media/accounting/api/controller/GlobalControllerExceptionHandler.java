@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 
+/**
+ * Контроллер для обработки ошибок.
+ */
 @Log
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {

@@ -6,5 +6,5 @@ import ru.media.accounting.model.Role;
 import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    Role findByTitle(String title);
+    Optional<Role> findByTitle(String title);
 }

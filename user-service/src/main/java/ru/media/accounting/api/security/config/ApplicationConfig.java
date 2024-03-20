@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -22,35 +23,46 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.media.accounting.api.security.JwtTokenFilter;
 import ru.media.accounting.api.security.JwtTokenProvider;
 
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * Конфигурация Spring Security, OpenApi.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class ApplicationConfig {
 
     private final JwtTokenProvider tokenProvider;
 
     private final ApplicationContext applicationContext;
 
+    /**
+     * Кодировка пароля.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Менеджер аутентификации.
+     * @param configuration Конфигурация аутентификации.
+     * @return {@link AuthenticationManager} менеджер аутентификации.
+     * @throws Exception пробрасывается в случае ошибки.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    /**
+     * Конфигурация OpenApi.
+     * Добавляем кнопку авторизации в OpenApi.
+     * @return {@link OpenAPI} конфигурация OpenApi.
+     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -71,6 +83,12 @@ public class ApplicationConfig {
                 );
     }
 
+    /**
+     * Конфигурация Spring Security.
+     * @param httpSecurity {@link HttpSecurity} конфигурация Spring Security.
+     * @return {@link SecurityFilterChain} конфигурация Spring Security FilterChain.
+     * @throws Exception пробрасывается в случае ошибки.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -92,7 +110,6 @@ public class ApplicationConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/v3/api-docs/swagger-config/**").permitAll()
-//                        .requestMatchers("/api/user/name/**").permitAll()
                         .anyRequest().authenticated())
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
