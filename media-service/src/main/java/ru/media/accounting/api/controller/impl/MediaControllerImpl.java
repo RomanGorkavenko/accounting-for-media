@@ -2,10 +2,7 @@ package ru.media.accounting.api.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.controller.MediaController;
 import ru.media.accounting.api.mappers.MediaMapper;
 import ru.media.accounting.dto.MediaResponse;
@@ -22,6 +19,7 @@ public class MediaControllerImpl implements MediaController {
     private final MediaMapper mediaMapper;
 
     @Override
+    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/user/{username}")
     @PreAuthorize("@customSecurityExpression.canAccessUser(#username)")
     public List<MediaResponse> getMediaByUserId(@PathVariable("username") String username) {

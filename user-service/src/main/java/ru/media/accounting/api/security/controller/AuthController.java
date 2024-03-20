@@ -1,8 +1,5 @@
-package ru.media.accounting.api.controller;
+package ru.media.accounting.api.security.controller;
 
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.media.accounting.dto.UserRequest;
 import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.dto.auth.JwtRequest;

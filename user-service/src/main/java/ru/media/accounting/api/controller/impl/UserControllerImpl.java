@@ -2,6 +2,7 @@ package ru.media.accounting.api.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.controller.UserController;
 import ru.media.accounting.api.mappers.UserMapper;
@@ -19,7 +20,9 @@ public class UserControllerImpl implements UserController {
     private final UserMapper userMapper;
 
     @Override
-    @GetMapping("/{username}")
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/name/{username}")
+    @PreAuthorize("@customSecurityExpression.canAccessUser(#username)")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
         return ResponseEntity.ok(userMapper.toDto(user));

@@ -1,4 +1,4 @@
-package ru.media.accounting.config;
+package ru.media.accounting.api.security.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -83,10 +83,10 @@ public class ApplicationConfig {
                             response.getWriter().write("Unauthorized.");
                         }))
                 .authorizeHttpRequests(configurer -> configurer
-//                        .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers("/swagger-ui/**").permitAll()
-//                        .requestMatchers("/v3/api-docs/**").permitAll()
-                        .anyRequest().permitAll())//authenticated())
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/v3/api-docs/swagger-config/**").permitAll()
+                        .anyRequest().authenticated())
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 

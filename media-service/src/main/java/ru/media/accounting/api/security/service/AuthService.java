@@ -1,4 +1,4 @@
-package ru.media.accounting.service;
+package ru.media.accounting.api.security.service;
 
 
 import lombok.RequiredArgsConstructor;

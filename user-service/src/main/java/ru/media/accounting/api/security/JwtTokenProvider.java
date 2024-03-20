@@ -12,12 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import ru.media.accounting.api.feign.UserFeignClient;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.api.security.service.props.JwtProperties;
 import ru.media.accounting.dto.auth.JwtResponse;
 import ru.media.accounting.dto.exception.AccessDeniedException;
 import ru.media.accounting.model.Role;
-import ru.media.accounting.api.security.service.props.JwtProperties;
+import ru.media.accounting.model.User;
+import ru.media.accounting.service.UserService;
 
 import java.security.Key;
 import java.time.Instant;
@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
 
     private final UserDetailsService userDetailsService;
-    private final UserFeignClient userFeignClient;
+    private final UserService userService;
     private Key key;
 
     @PostConstruct
@@ -79,7 +79,7 @@ public class JwtTokenProvider {
             throw new AccessDeniedException();
         }
         String username = getUsername(refreshToken);
-        UserResponse user = userFeignClient.findByUsername(username).getBody();
+        User user = userService.findByUsername(username);
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(username);
         jwtResponse.setAccessToken(createAccessToken(user.getId(), username, user.getRoles()));

@@ -1,4 +1,4 @@
-package ru.media.accounting.service.props;
+package ru.media.accounting.api.security.service.props;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
