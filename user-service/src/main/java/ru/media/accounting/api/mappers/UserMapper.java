@@ -1,6 +1,7 @@
 package ru.media.accounting.api.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.model.User;
 
