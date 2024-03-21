@@ -57,6 +57,10 @@ ALTER TABLE
 
 ALTER TABLE
     "media"
+    ADD CONSTRAINT "media_number_unique" UNIQUE ("number");
+
+ALTER TABLE
+    "media"
     ADD CONSTRAINT "media_status_id_foreign" FOREIGN KEY ("status_id") REFERENCES "status" ("id");
 ALTER TABLE
     "media"

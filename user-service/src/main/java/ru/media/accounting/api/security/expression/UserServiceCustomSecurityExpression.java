@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.security.UserServiceJwtEntity;
-import ru.media.accounting.service.UserService;
 
 import java.util.NoSuchElementException;
 
@@ -17,9 +16,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class UserServiceCustomSecurityExpression {
 
-    private final UserService userService;
-
-    public boolean canAccessUserByUsername(String username) {
+    public boolean canAccessUser(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null) {

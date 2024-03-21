@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Timer
-@Tag(name = "User Controller", description = "User API")
+@Tag(name = "Пользователи.", description = "API для работы с пользователями.")
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
@@ -30,7 +30,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/name/{username}")
-    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserByUsername(#username)")
+    @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUser(#username)")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
         return ResponseEntity.ok(userMapper.toDto(user));
@@ -65,9 +65,9 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @CrossOrigin(origins = "http://localhost:8765")
-    @DeleteMapping
+    @DeleteMapping("/delete/{username}")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#username)")
-    public ResponseEntity<String> delete(String username) {
+    public ResponseEntity<String> delete(@PathVariable("username") String username) {
         userService.delete(username);
         return new ResponseEntity<>("Пользователь с username = \"" + username + "\" успешно удален.", HttpStatus.OK);
     }

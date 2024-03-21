@@ -5,14 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.media.accounting.api.feign.UserFeignClient;
 import ru.media.accounting.api.security.MediaServiceJwtEntity;
 
 @Service("mediaServiceCustomSecurityExpression")
 @RequiredArgsConstructor
 public class MediaServiceCustomSecurityExpression {
-
-    private final UserFeignClient userFeignClient;
 
     public boolean canAccessUser(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -21,6 +18,13 @@ public class MediaServiceCustomSecurityExpression {
         String currentUsername = user.getUsername();
 
         return currentUsername.equals(username) || hasAnyRole(authentication, "ROLE_ADMIN");
+
+    }
+
+    public boolean canAccessUserROLE_ADMIN() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return hasAnyRole(authentication, "ROLE_ADMIN");
 
     }
 

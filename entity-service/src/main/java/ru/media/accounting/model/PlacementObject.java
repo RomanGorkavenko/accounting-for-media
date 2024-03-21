@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Table(name = "objects")
-public class Objects {
+public class PlacementObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Objects {
     @OneToMany(mappedBy = "object")
     private Set<Media> medias;
 
-    public Objects(String title) {
+    public PlacementObject(String title) {
         this.title = title;
     }
 
@@ -34,8 +34,8 @@ public class Objects {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Objects objects = (Objects) o;
-        return java.util.Objects.equals(id, objects.id);
+        PlacementObject placementObject = (PlacementObject) o;
+        return java.util.Objects.equals(id, placementObject.id);
     }
 
     @Override

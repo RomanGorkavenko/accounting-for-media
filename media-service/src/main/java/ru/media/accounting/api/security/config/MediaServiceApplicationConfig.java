@@ -2,11 +2,11 @@ package ru.media.accounting.api.security.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -33,8 +33,6 @@ public class MediaServiceApplicationConfig {
 
     private final MediaServiceJwtTokenProvider tokenProvider;
 
-    private final ApplicationContext applicationContext;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -59,9 +57,12 @@ public class MediaServiceApplicationConfig {
                                 )
                 )
                 .info(new Info()
-                        .title("Accounting for Media list API")
+                        .title("Accounting for Media list Media API")
                         .description("Spring boot cloud application")
                         .version("1.0")
+                        .contact(new Contact()
+                                .name("Roman Gorkavenko")
+                                .email("roman@gorkavenko.ru"))
                 );
     }
 

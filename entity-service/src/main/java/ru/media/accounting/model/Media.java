@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -25,7 +26,7 @@ public class Media {
 
     @ManyToOne
     @JoinColumn(name = "object_id", referencedColumnName = "id")
-    private Objects object;
+    private PlacementObject object;
 
     @Column(name = "user_id")
     private Long userId;
@@ -42,7 +43,7 @@ public class Media {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
-    public Media(String title, Long number, Objects object, Long userId, Category category, Status status) {
+    public Media(String title, Long number, PlacementObject object, Long userId, Category category, Status status) {
         this.title = title;
         this.number = number;
         this.object = object;
@@ -56,11 +57,11 @@ public class Media {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Media media = (Media) o;
-        return java.util.Objects.equals(id, media.id);
+        return Objects.equals(id, media.id);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(id);
+        return Objects.hash(id);
     }
 }

@@ -2,6 +2,7 @@ package ru.media.accounting.api.security.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -74,9 +75,12 @@ public class UserServiceApplicationConfig {
                                 )
                 )
                 .info(new Info()
-                        .title("Accounting for User list API")
+                        .title("Accounting for Media list User API")
                         .description("Spring boot cloud application")
                         .version("1.0")
+                        .contact(new Contact()
+                                .name("Roman Gorkavenko")
+                                .email("roman@gorkavenko.ru"))
                 );
     }
 
