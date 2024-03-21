@@ -8,28 +8,52 @@ services:
     ports:
       - '8761:8761'
 
-  postgres:
+  postgres_media_service:
+    image: postgres:15.6-alpine3.19
+    container_name: media_db
+    environment:
+      POSTGRES_DB: "media_db"
+      POSTGRES_USER: "mediadata"
+      POSTGRES_PASSWORD: "mediadata"
+    volumes:
+      - .\media-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+
+  postgres_user_service:
     image: postgres:15.6-alpine3.19
     container_name: users_db
     environment:
       POSTGRES_DB: "users_db"
       POSTGRES_USER: "userdata"
       POSTGRES_PASSWORD: "userdata"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - C:\Users\482\Desktop\accounting-for-media\user-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
-      - users-data:/var/lib/postgresql/data
+      - .\user-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5434:5432"
 
-  client:
+  client_media_service:
+    build:
+      context: .\media-service\
+    container_name: media-service
+    depends_on:
+      - postgres_media_service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_media_service/media_db?currentSchema=media
+      - SPRING_DATASOURCE_USERNAME=mediadata
+      - SPRING_DATASOURCE_PASSWORD=mediadata
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+    ports:
+      - '8082:8082'
+
+  client_user_service:
     build:
       context: C:\Users\482\Desktop\accounting-for-media\user-service\
     container_name: user-service
     depends_on:
-      - postgres
+      - postgres_user_service
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users_db?currentSchema=users_data
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_user_service/users_db?currentSchema=users_data
       - SPRING_DATASOURCE_USERNAME=userdata
       - SPRING_DATASOURCE_PASSWORD=userdata
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
@@ -44,7 +68,3 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
     ports:
       - '8765:8765'
-
-
-volumes:
-  users-data:
