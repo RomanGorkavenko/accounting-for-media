@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.mappers.CategoryMapper;
 import ru.media.accounting.dto.category.CategoryRequest;
@@ -54,7 +55,10 @@ public class CategoryController {
 
     @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete")
-    @Operation(summary = "Удалить категорию.", description = "Удаляет категорию.")
+    @Operation(summary = "Удалить категорию.",
+            description = "Удаляет категорию. Только для администратора." +
+            "Прежде чем удалять категорию, необходимо проверить, что носители ее не содержат.")
+    @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     public ResponseEntity<String> deleteCategory(@RequestBody CategoryRequest request) {
         service.delete(request);
         return new ResponseEntity<>("Категория " + request.getTitle() + " удалена.", HttpStatus.OK);

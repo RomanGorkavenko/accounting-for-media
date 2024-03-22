@@ -228,6 +228,24 @@ public class MediaService {
     }
 
     /**
+     * Получение носителя по статусу.
+     * @param status статус носителя.
+     * @return {@link List<Media>} список носителей.
+     */
+    public List<Media> findByStatus(Status status) {
+        return mediaRepository.findByStatus(status);
+    }
+
+    /**
+     * Получение носителей по категории.
+     * @param category категория носителя.
+     * @return {@link List<Media>} список носителей.
+     */
+    public List<Media> findByCategory(Category category) {
+        return mediaRepository.findByCategory(category);
+    }
+
+    /**
      * Получение ID пользователя. Из авторизации.
      * @return ID пользователя.
      */

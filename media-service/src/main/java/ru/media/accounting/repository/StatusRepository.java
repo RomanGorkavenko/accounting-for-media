@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface StatusRepository extends JpaRepository<Status, Long> {
     Optional<Status> findByTitle(String statusTitle);
+    Optional<Status> findByColor(String statusColor);
 }
