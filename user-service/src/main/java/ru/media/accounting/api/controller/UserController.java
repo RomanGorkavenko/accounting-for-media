@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import ru.media.accounting.dto.UserRequest;
-import ru.media.accounting.dto.UserRequestUpdate;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserRequest;
+import ru.media.accounting.dto.user.UserRequestUpdate;
+import ru.media.accounting.dto.user.UserResponse;
 
 import java.util.List;
 

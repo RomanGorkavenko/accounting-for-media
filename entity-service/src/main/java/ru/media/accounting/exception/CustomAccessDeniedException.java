@@ -1,4 +1,4 @@
-package ru.media.accounting.dto.exception;
+package ru.media.accounting.exception;
 
 /**
  * Это класс исключения, которое выбрасывается, если пользователь не имеет доступа к данному ресурсу.

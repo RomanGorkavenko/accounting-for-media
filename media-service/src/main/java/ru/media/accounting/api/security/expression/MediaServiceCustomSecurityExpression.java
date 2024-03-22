@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.security.MediaServiceJwtEntity;
+import ru.media.accounting.exception.CustomAccessDeniedException;
 
 import java.util.NoSuchElementException;
 
@@ -29,6 +30,10 @@ public class MediaServiceCustomSecurityExpression {
 
     public boolean canAccessUserROLE_ADMIN() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new CustomAccessDeniedException();
+        }
 
         return hasAnyRole(authentication, "ROLE_ADMIN");
 

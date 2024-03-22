@@ -1,4 +1,4 @@
-package ru.media.accounting.dto;
+package ru.media.accounting.dto.user;
 
 import lombok.Data;
 

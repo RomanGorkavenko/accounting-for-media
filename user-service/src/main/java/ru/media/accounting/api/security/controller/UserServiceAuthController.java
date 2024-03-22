@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import ru.media.accounting.dto.UserRequest;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserRequest;
+import ru.media.accounting.dto.user.UserResponse;
 import ru.media.accounting.dto.auth.JwtRequest;
 import ru.media.accounting.dto.auth.JwtResponse;
 

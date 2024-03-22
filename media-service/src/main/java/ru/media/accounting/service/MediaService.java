@@ -7,11 +7,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.feign.UserFeignClient;
 import ru.media.accounting.api.security.MediaServiceJwtEntity;
-import ru.media.accounting.dto.MediaRequest;
-import ru.media.accounting.dto.MediaRequestUpdate;
-import ru.media.accounting.dto.UserResponse;
-import ru.media.accounting.dto.exception.CustomAccessDeniedException;
-import ru.media.accounting.dto.exception.ElementAlreadyExistsException;
+import ru.media.accounting.dto.media.MediaRequest;
+import ru.media.accounting.dto.media.MediaRequestUpdate;
+import ru.media.accounting.dto.user.UserResponse;
+import ru.media.accounting.exception.CustomAccessDeniedException;
+import ru.media.accounting.exception.ElementAlreadyExistsException;
 import ru.media.accounting.model.*;
 import ru.media.accounting.repository.MediaRepository;
 

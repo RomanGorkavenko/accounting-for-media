@@ -1,4 +1,4 @@
-package ru.media.accounting.dto.exception;
+package ru.media.accounting.exception;
 
 /**
  * Класс исключения, которое выбрасывается при попытке создания элемента, если такой элемент уже существует.

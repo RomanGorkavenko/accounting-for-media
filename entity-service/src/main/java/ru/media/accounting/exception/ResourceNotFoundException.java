@@ -1,4 +1,4 @@
-package ru.media.accounting.dto.exception;
+package ru.media.accounting.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

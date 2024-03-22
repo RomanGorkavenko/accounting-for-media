@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.media.accounting.dto.MediaRequest;
-import ru.media.accounting.dto.MediaRequestUpdate;
+import ru.media.accounting.dto.media.MediaRequest;
+import ru.media.accounting.dto.media.MediaRequestUpdate;
 import ru.spring.boot.starter.aop.annotations.Timer;
 import ru.media.accounting.api.mappers.MediaMapper;
-import ru.media.accounting.dto.MediaResponse;
+import ru.media.accounting.dto.media.MediaResponse;
 import ru.media.accounting.service.MediaService;
 
 import java.util.List;

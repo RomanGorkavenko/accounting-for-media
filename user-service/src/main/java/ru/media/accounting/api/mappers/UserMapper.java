@@ -1,7 +1,7 @@
 package ru.media.accounting.api.mappers;
 
 import org.mapstruct.Mapper;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserResponse;
 import ru.media.accounting.model.User;
 
 import java.util.List;

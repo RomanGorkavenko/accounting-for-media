@@ -1,7 +1,7 @@
 package ru.media.accounting.api.mappers;
 
 import org.mapstruct.Mapper;
-import ru.media.accounting.dto.MediaResponse;
+import ru.media.accounting.dto.media.MediaResponse;
 import ru.media.accounting.model.Media;
 
 import java.util.List;

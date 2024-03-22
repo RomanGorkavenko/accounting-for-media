@@ -3,8 +3,8 @@ package ru.media.accounting.api.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.media.accounting.dto.UserRequest;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserRequest;
+import ru.media.accounting.dto.user.UserResponse;
 
 @FeignClient(name = "user-service")
 public interface UserFeignClient {

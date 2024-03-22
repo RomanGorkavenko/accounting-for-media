@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.feign.UserFeignClient;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserResponse;
 import ru.media.accounting.dto.auth.JwtResponse;
-import ru.media.accounting.dto.exception.CustomAccessDeniedException;
+import ru.media.accounting.exception.CustomAccessDeniedException;
 import ru.media.accounting.model.Role;
 import ru.media.accounting.api.security.props.MediaServiceJwtProperties;
 

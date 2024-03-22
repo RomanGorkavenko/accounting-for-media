@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.media.accounting.dto.exception.CustomAccessDeniedException;
-import ru.media.accounting.dto.exception.ElementAlreadyExistsException;
+import ru.media.accounting.exception.CustomAccessDeniedException;
+import ru.media.accounting.exception.ElementAlreadyExistsException;
 
 import java.util.NoSuchElementException;
 import java.util.logging.Level;

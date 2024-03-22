@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.feign.UserFeignClient;
-import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.user.UserResponse;
 
 @Service
 @RequiredArgsConstructor
