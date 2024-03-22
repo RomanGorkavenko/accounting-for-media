@@ -7,12 +7,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.api.security.MediaServiceJwtEntity;
 
+import java.util.NoSuchElementException;
+
 @Service("mediaServiceCustomSecurityExpression")
 @RequiredArgsConstructor
 public class MediaServiceCustomSecurityExpression {
 
     public boolean canAccessUser(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            throw new NoSuchElementException("Пользователь с username = " + username + " не найден");
+        }
 
         MediaServiceJwtEntity user = (MediaServiceJwtEntity) authentication.getPrincipal();
         String currentUsername = user.getUsername();

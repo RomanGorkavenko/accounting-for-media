@@ -76,7 +76,6 @@ public class MediaController {
 
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/user/{username}")
-    @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUser(#username)")
     @Operation(summary = "Получить все носители пользователя по его имени.",
                 description = "Предоставляет все носители пользователя по его имени. " +
                         "Предоставляет все носители любого пользователя по его имени - только для администратора.")

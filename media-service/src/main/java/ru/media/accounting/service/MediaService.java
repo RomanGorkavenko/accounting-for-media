@@ -10,6 +10,7 @@ import ru.media.accounting.api.security.MediaServiceJwtEntity;
 import ru.media.accounting.dto.MediaRequest;
 import ru.media.accounting.dto.MediaRequestUpdate;
 import ru.media.accounting.dto.UserResponse;
+import ru.media.accounting.dto.exception.CustomAccessDeniedException;
 import ru.media.accounting.dto.exception.ElementAlreadyExistsException;
 import ru.media.accounting.model.*;
 import ru.media.accounting.repository.MediaRepository;
@@ -88,6 +89,7 @@ public class MediaService {
         Media media = findByNumber(number);
         UserResponse user = userFeignClient.findByUsername(username).getBody();
 
+        assert user != null;
         media.setUserId(user.getId());
 
         return mediaRepository.save(media);
@@ -105,6 +107,8 @@ public class MediaService {
             user = userFeignClient.findByUsername(username).getBody();
         } catch (FeignException.NotFound e) {
             throw new NoSuchElementException("Пользователь с username = " + username + " не найден");
+        } catch (FeignException.Forbidden e) {
+            throw new CustomAccessDeniedException();
         }
         Long userId = Objects.requireNonNull(user).getId();
         List<Media> media = mediaRepository.findByUserId(userId);
@@ -126,6 +130,8 @@ public class MediaService {
             user = userFeignClient.findByEmail(email).getBody();
         } catch (FeignException.NotFound e) {
             throw new NoSuchElementException("Пользователь с username = " + email + " не найден");
+        } catch (FeignException.Forbidden e) {
+            throw new CustomAccessDeniedException();
         }
         Long userId = Objects.requireNonNull(user).getId();
         List<Media> media = mediaRepository.findByUserId(userId);
@@ -176,7 +182,8 @@ public class MediaService {
      */
     public Media add(MediaRequest mediaRequest) {
         if(mediaRepository.findByNumber(mediaRequest.getNumber()).isPresent()) {
-            throw new ElementAlreadyExistsException("Носитель с номером " + mediaRequest.getNumber() + " уже существует");
+            throw new ElementAlreadyExistsException(
+                    "Носитель с номером " + mediaRequest.getNumber() + " уже существует");
         }
         Category category = categoryService.findByTitle(mediaRequest.getCategoryTitle());
         PlacementObject object = placementObjectService.findByTitle(mediaRequest.getObjectTitle());

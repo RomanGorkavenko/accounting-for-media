@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import ru.media.accounting.api.feign.UserFeignClient;
 import ru.media.accounting.dto.UserResponse;
 import ru.media.accounting.dto.auth.JwtResponse;
-import ru.media.accounting.dto.exception.AccessDeniedException;
+import ru.media.accounting.dto.exception.CustomAccessDeniedException;
 import ru.media.accounting.model.Role;
 import ru.media.accounting.api.security.props.MediaServiceJwtProperties;
 
@@ -76,7 +76,7 @@ public class MediaServiceJwtTokenProvider {
     public JwtResponse refreshUserTokens(String refreshToken) {
         JwtResponse jwtResponse = new JwtResponse();
         if (!validateToken(refreshToken)) {
-            throw new AccessDeniedException();
+            throw new CustomAccessDeniedException();
         }
         String username = getUsername(refreshToken);
         UserResponse user = userFeignClient.findByUsername(username).getBody();

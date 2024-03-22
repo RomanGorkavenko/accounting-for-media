@@ -1,9 +1,14 @@
 package ru.media.accounting.dto.exception;
 
+/**
+ * Класс исключения, которое выбрасывается при попытке создания элемента, если такой элемент уже существует.
+ */
 public class ElementAlreadyExistsException extends RuntimeException {
 
-    public ElementAlreadyExistsException() {
-    }
+    /**
+     * Это исключение, которое выбрасывается при попытке создания элемента, если такой элемент уже существует.
+     * @param message сообщение об ошибке.
+     */
     public ElementAlreadyExistsException(String message) {
         super(message);
     }

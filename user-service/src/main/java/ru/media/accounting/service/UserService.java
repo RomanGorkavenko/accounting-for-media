@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.dto.UserRequest;
 import ru.media.accounting.dto.UserRequestUpdate;
+import ru.media.accounting.dto.exception.ElementAlreadyExistsException;
 import ru.media.accounting.model.Role;
 import ru.media.accounting.model.User;
 import ru.media.accounting.repository.UserRepository;
@@ -49,6 +50,11 @@ public class UserService {
      * @return {@link User} пользователя.
      */
     public User save(UserRequest userRequest) {
+        if(userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
+            throw new ElementAlreadyExistsException(
+                    "Пользователь с username = " + userRequest.getUsername() + " уже существует");
+        }
+
         User user = new User(userRequest.getUsername(), userRequest.getEmail(),
                 passwordEncoder.encode(userRequest.getPassword()));
         Role role = roleService.getRole("ROLE_USER");
