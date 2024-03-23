@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.dto.status.StatusRequest;
+import ru.media.accounting.dto.status.StatusRequestUpdate;
 import ru.media.accounting.exception.ElementAlreadyExistsException;
 import ru.media.accounting.model.Status;
 import ru.media.accounting.repository.StatusRepository;
@@ -66,20 +67,26 @@ public class StatusService {
      * @param statusRequest запрос на обновление статуса.
      * @return {@link Status} статус.
      */
-    public Status update(StatusRequest statusRequest) {
-        Status status = findByTitle(statusRequest.getTitle());
-        status.setTitle(statusRequest.getTitle());
-        status.setColor(statusRequest.getColor());
+    public Status update(StatusRequestUpdate statusRequest) {
+        if(statusRepository.findByTitle(statusRequest.getNewTitle()).isPresent() ||
+                statusRepository.findByColor(statusRequest.getNewColor()).isPresent()) {
+            throw new ElementAlreadyExistsException("Статус уже существует.");
+        }
+
+        Status status = findByTitle(statusRequest.getOldTitle());
+        status.setTitle(statusRequest.getNewTitle());
+        status.setColor(statusRequest.getNewColor());
+
         return statusRepository.save(status);
     }
 
     /**
      * Удаление статуса. Если статус используется в медиа, то выбрасывается исключение.
-     * @param statusRequest запрос на удаление статуса.
+     * @param statusTitle запрос на удаление статуса.
      * @throws ElementAlreadyExistsException Если статус используется в медиа.
      */
-    public void delete(StatusRequest statusRequest) {
-        Status status = findByTitle(statusRequest.getTitle());
+    public void delete(String statusTitle) {
+        Status status = findByTitle(statusTitle);
         if (mediaService.findByStatus(status).isEmpty()) {
             statusRepository.delete(status);
         } else {

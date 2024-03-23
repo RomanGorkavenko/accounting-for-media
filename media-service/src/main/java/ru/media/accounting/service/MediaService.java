@@ -56,20 +56,6 @@ public class MediaService {
 
     /**
      * Поиск носителя по названию и пользователю.
-     * @param mediaTitle название носителя.
-     * @return {@link List<Media>} список носителей.
-     * @throws NoSuchElementException если носители не найдены.
-     */
-    public List<Media> findByTitleAndUserId(String mediaTitle) {
-        List<Media> media = mediaRepository.findByTitleAndUserId(mediaTitle, getUserId());
-        if (media.isEmpty()) {
-            throw new NoSuchElementException("У вас нет носителей с названием " + mediaTitle);
-        }
-        return media;
-    }
-
-    /**
-     * Поиск носителя по названию и пользователю.
      * @param number номер носителя.
      * @return {@link Media} носитель.
      * @throws NoSuchElementException если носитель не найден.
@@ -87,7 +73,15 @@ public class MediaService {
      */
     public Media changeUser(Long number, String username) {
         Media media = findByNumber(number);
-        UserResponse user = userFeignClient.findByUsername(username).getBody();
+
+        UserResponse user;
+        try {
+            user = userFeignClient.findByUsername(username).getBody();
+        } catch (FeignException.NotFound e) {
+            throw new NoSuchElementException(e.getLocalizedMessage());
+        } catch (FeignException.Forbidden e) {
+            throw new CustomAccessDeniedException();
+        }
 
         assert user != null;
         media.setUserId(user.getId());
@@ -164,13 +158,28 @@ public class MediaService {
     /**
      * Получение всех носителей пользователя по названию категории.
      * С сортировкой по статусу.
-     * @param category название категории.
+     * @param categoryTitle название категории.
      * @return {@link List<Media>} список носителей.
      */
-    public List<Media> findAllByCategoryAndUser(String category){
-        List<Media> media = mediaRepository.findByCategoryTitleAndUserIdOrderByStatusAsc(category, getUserId());
+    public List<Media> findAllByCategoryAndUser(String categoryTitle){
+        List<Media> media = mediaRepository.findByCategoryTitleAndUserIdOrderByStatusAsc(categoryTitle, getUserId());
         if (media.isEmpty()) {
-            throw new NoSuchElementException("Не найдено носителей у пользователя по категории " + category);
+            throw new NoSuchElementException("Не найдено носителей у пользователя по категории " + categoryTitle);
+        }
+        return media;
+    }
+
+    /**
+     * Получение всех носителей пользователя по названию статуса.
+     * С сортировкой по статусу.
+     * @param statusTitle название статуса.
+     * @return {@link List<Media>} список носителей.
+     * @throws NoSuchElementException если носители со статусом не найдены.
+     */
+    public List<Media> findAllByStatusAndUser(String statusTitle){
+        List<Media> media = mediaRepository.findByStatusTitleAndUserIdOrderByStatusTitleAsc(statusTitle, getUserId());
+        if (media.isEmpty()) {
+            throw new NoSuchElementException("Не найдено носителей у пользователя по категории " + statusTitle);
         }
         return media;
     }
@@ -185,6 +194,7 @@ public class MediaService {
             throw new ElementAlreadyExistsException(
                     "Носитель с номером " + mediaRequest.getNumber() + " уже существует");
         }
+
         Category category = categoryService.findByTitle(mediaRequest.getCategoryTitle());
         PlacementObject object = placementObjectService.findByTitle(mediaRequest.getObjectTitle());
         Status status = statusService.findByTitle(mediaRequest.getStatusTitle());
@@ -200,6 +210,7 @@ public class MediaService {
         media.setEnd_date(media.getStart_date().plusDays(mediaRequest.getServiceLife()));
         media.setCategory(category);
         media.setStatus(status);
+
         return mediaRepository.save(media);
     }
 
@@ -210,11 +221,17 @@ public class MediaService {
      * @return {@link Media} носитель.
      */
     public Media update(MediaRequestUpdate mediaRequestUpdate) {
+        if(mediaRepository.findByNumber(mediaRequestUpdate.getNumber()).isPresent()) {
+            throw new ElementAlreadyExistsException(
+                    "Носитель с номером " + mediaRequestUpdate.getNumber() + " уже существует");
+        }
+
         Media media = findByNumberAndUserId(mediaRequestUpdate.getNumber());
         Status status = statusService.findByTitle(mediaRequestUpdate.getStatusTitle());
         media.setTitle(mediaRequestUpdate.getTitle());
         media.setDescription(mediaRequestUpdate.getDescription());
         media.setStatus(status);
+
         return mediaRepository.save(media);
     }
 
@@ -246,6 +263,49 @@ public class MediaService {
     }
 
     /**
+     * Подсчет количества носителей.
+     * @return количество носителей.
+     * @throws NoSuchElementException если носителей не найдено.
+     */
+    public Long countAll() {
+        return mediaRepository.countAll()
+                .orElseThrow(() -> new NoSuchElementException("Не найдено носителей"));
+    }
+
+    /**
+     * Подсчет количества носителей по названию.
+     * @param title название носителя.
+     * @return количество носителей.
+     * @throws NoSuchElementException если носителей не найдено.
+     */
+    public Long countTitle(String title) {
+        return mediaRepository.countTitle(title)
+                .orElseThrow(() -> new NoSuchElementException("Не найдено носителей"));
+    }
+
+    /**
+     * Подсчет количества носителей по статусу.
+     * @param statusTitle статус носителя.
+     * @return количество носителей.
+     * @throws NoSuchElementException если носителей не найдено.
+     */
+    public Long countStatusTitle(String statusTitle) {
+        return mediaRepository.countStatusTitle(statusTitle)
+                .orElseThrow(() -> new NoSuchElementException("Не найдено носителей"));
+    }
+
+    /**
+     * Подсчет количества носителей по категории.
+     * @param categoryTitle название категории носителя.
+     * @return количество носителей
+     * @throws NoSuchElementException если носителей не найдено.
+     */
+    public Long countCategoryTitle(String categoryTitle) {
+        return mediaRepository.countCategoryTitle(categoryTitle)
+                .orElseThrow(() -> new NoSuchElementException("Не найдено носителей"));
+    }
+
+    /**
      * Получение ID пользователя. Из авторизации.
      * @return ID пользователя.
      */
@@ -253,11 +313,5 @@ public class MediaService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         MediaServiceJwtEntity user = (MediaServiceJwtEntity) authentication.getPrincipal();
         return user.getUser().getId();
-    }
-
-    private String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MediaServiceJwtEntity user = (MediaServiceJwtEntity) authentication.getPrincipal();
-        return user.getUsername();
     }
 }

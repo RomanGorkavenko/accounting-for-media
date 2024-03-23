@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.mappers.StatusMapper;
 import ru.media.accounting.dto.status.StatusRequest;
+import ru.media.accounting.dto.status.StatusRequestUpdate;
 import ru.media.accounting.dto.status.StatusResponse;
 import ru.media.accounting.service.StatusService;
 import ru.spring.boot.starter.aop.annotations.Timer;
@@ -52,18 +53,18 @@ public class StatusController {
     @PutMapping("/update")
     @Operation(summary = "Обновить статус.", description = "Обновляет статус. Только для администратора.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
-    public ResponseEntity<StatusResponse> updateStatus(@RequestBody StatusRequest request) {
+    public ResponseEntity<StatusResponse> updateStatus(@RequestBody StatusRequestUpdate request) {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 
     @CrossOrigin(origins = "http://localhost:8765")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{title}")
     @Operation(summary = "Удалить статус.",
             description = "Удаляет статус с указанным названием. Только для администратора." +
             "Прежде чем удалять статус, необходимо проверить, что носители его не содержат.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
-    public ResponseEntity<String> deleteStatus(@RequestBody StatusRequest request) {
-        service.delete(request);
-        return new ResponseEntity<>("Статус" + request.getTitle() + " удален.", HttpStatus.OK);
+    public ResponseEntity<String> deleteStatus(@PathVariable("title") String title) {
+        service.delete(title);
+        return new ResponseEntity<>("Статус" + title + " удален.", HttpStatus.OK);
     }
 }

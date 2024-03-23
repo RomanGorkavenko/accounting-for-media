@@ -50,7 +50,8 @@ public class UserService {
      * @return {@link User} пользователя.
      */
     public User save(UserRequest userRequest) {
-        if(userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
+        if(userRepository.findByUsername(userRequest.getUsername()).isPresent() ||
+        userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ElementAlreadyExistsException(
                     "Пользователь с username = " + userRequest.getUsername() + " уже существует");
         }

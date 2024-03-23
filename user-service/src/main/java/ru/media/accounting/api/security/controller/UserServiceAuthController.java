@@ -25,10 +25,11 @@ public interface UserServiceAuthController {
     })
     JwtResponse login(JwtRequest loginRequest);
 
-    @Operation(summary = "Регистрация", description = "Регистрация пользователя")
+    @Operation(summary = "Регистрация", description = "Регистрация пользователя. Только для администратора")
     UserResponse register(UserRequest userRequest);
 
-    @Operation(summary = "Обновление access token", description = "Обновляет access token")
+    @Operation(summary = "Обновление access token",
+            description = "Обновляет access token. Token вставляется без кавычек. Только для администратора")
     JwtResponse refresh(String refreshToken);
 
 }

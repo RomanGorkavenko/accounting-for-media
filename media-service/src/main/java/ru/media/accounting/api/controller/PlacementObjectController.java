@@ -7,8 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.media.accounting.api.mappers.MediaMapper;
 import ru.media.accounting.api.mappers.PlacementObjectMapper;
+import ru.media.accounting.dto.media.MediaResponse;
 import ru.media.accounting.dto.placement_object.PlacementObjectRequest;
+import ru.media.accounting.dto.placement_object.PlacementObjectRequestUpdate;
 import ru.media.accounting.dto.placement_object.PlacementObjectResponse;
 import ru.media.accounting.service.PlacementObjectService;
 import ru.spring.boot.starter.aop.annotations.Timer;
@@ -24,6 +27,7 @@ public class PlacementObjectController {
 
     private final PlacementObjectService service;
     private final PlacementObjectMapper mapper;
+    private final MediaMapper mediaMapper;
 
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get/{title}")
@@ -54,18 +58,27 @@ public class PlacementObjectController {
     @Operation(summary = "Обновить объект размещения.",
             description = "Обновляет объект размещения. Только для администратора.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
-    public ResponseEntity<PlacementObjectResponse> updatePlacementObject(@RequestBody PlacementObjectRequest request) {
+    public ResponseEntity<PlacementObjectResponse> updatePlacementObject(
+            @RequestBody PlacementObjectRequestUpdate request) {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 
     @CrossOrigin(origins = "http://localhost:8765")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{title}")
     @Operation(summary = "Удалить объект размещения.",
             description = "Удаляет объект размещения с указанным названием. Только для администратора." +
             "Прежде чем удалять статус, необходимо проверить, что носители его не содержат.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
-    public ResponseEntity<String> deletePlacementObject(@RequestBody PlacementObjectRequest request) {
-        service.delete(request);
-        return new ResponseEntity<>("Объект размещения" + request.getTitle() + " удален.", HttpStatus.OK);
+    public ResponseEntity<String> deletePlacementObject(@PathVariable("title") String title) {
+        service.delete(title);
+        return new ResponseEntity<>("Объект размещения" + title + " удален.", HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/{title}/media")
+    @Operation(summary = "Получить носители объекта размещения.",
+            description = "Предоставляет носители объекта размещения.")
+    public ResponseEntity<List<MediaResponse>> getMediaByTitle(@PathVariable("title") String title) {
+        return ResponseEntity.ok(mediaMapper.toDto(service.getMedias(title)));
     }
 }

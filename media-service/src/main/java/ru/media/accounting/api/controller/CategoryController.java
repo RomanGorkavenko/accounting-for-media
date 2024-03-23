@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.media.accounting.api.mappers.CategoryMapper;
 import ru.media.accounting.dto.category.CategoryRequest;
+import ru.media.accounting.dto.category.CategoryRequestUpdate;
 import ru.media.accounting.dto.category.CategoryResponse;
 import ru.media.accounting.service.CategoryService;
 import ru.spring.boot.starter.aop.annotations.Timer;
@@ -49,7 +50,8 @@ public class CategoryController {
     @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить категорию.", description = "Обновляет категорию.")
-    public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> updateCategory(
+            @RequestBody CategoryRequestUpdate request) {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 

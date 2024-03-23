@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.dto.category.CategoryRequest;
+import ru.media.accounting.dto.category.CategoryRequestUpdate;
 import ru.media.accounting.exception.ElementAlreadyExistsException;
 import ru.media.accounting.model.Category;
 import ru.media.accounting.repository.CategoryRepository;
@@ -65,9 +66,16 @@ public class CategoryService {
      * @param categoryRequest запрос категории.
      * @return {@link Category} категорию.
      */
-    public Category update(CategoryRequest categoryRequest) {
-        Category category = findByTitle(categoryRequest.getTitle());
-        category.setTitle(categoryRequest.getTitle());
+    public Category update(CategoryRequestUpdate categoryRequest) {
+
+        if(categoryRepository.findByTitle(categoryRequest.getNewTitle()).isPresent()) {
+            throw new ElementAlreadyExistsException(
+                    "Категория с именем " + categoryRequest.getNewTitle() + " уже существует");
+        }
+
+        Category category = findByTitle(categoryRequest.getOldTitle());
+        category.setTitle(categoryRequest.getNewTitle());
+
         return categoryRepository.save(category);
     }
 

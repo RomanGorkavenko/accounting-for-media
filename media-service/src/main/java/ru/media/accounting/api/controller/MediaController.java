@@ -30,14 +30,16 @@ public class MediaController {
 
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get-title/{title}")
-    @Operation(summary = "Получить носитель по названию.", description = "Предоставляет носитель по названию.")
+    @Operation(summary = "Получить носитель по названию.",
+            description = "Предоставляет носитель по названию.")
     public ResponseEntity<List<MediaResponse>> getMediaByTitle(@PathVariable("title") String mediaTitle) {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.findByTitle(mediaTitle)));
     }
 
     @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get-number/{number}")
-    @Operation(summary = "Получить носитель по номеру.", description = "Предоставляет носитель по номеру.")
+    @Operation(summary = "Получить носитель по номеру.",
+            description = "Предоставляет носитель по номеру.")
     public ResponseEntity<MediaResponse> getMediaByNumber(@PathVariable("number") Long number) {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.findByNumber(number)));
     }
@@ -107,12 +109,49 @@ public class MediaController {
     }
 
     @CrossOrigin(origins = "http://localhost:8765")
-    @GetMapping("/category/{categoryname}")
+    @GetMapping("/category/{categoryTitle}")
     @Operation(summary = "Получить все носители пользователя по категории с сортировкой по статусу.",
             description = "Предоставляет все носители пользователя по категории с сортировкой по статусу.")
-    public List<MediaResponse> getAllByCategoryAndUser(@PathVariable("categoryname") String category) {
-        return mediaMapper.toDto(mediaService.findAllByCategoryAndUser(category));
+    public List<MediaResponse> getAllByCategoryAndUser(@PathVariable("categoryTitle") String categoryTitle) {
+        return mediaMapper.toDto(mediaService.findAllByCategoryAndUser(categoryTitle));
     }
 
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/status/{statusTitle}")
+    @Operation(summary = "Получить все носители пользователя по статусу.",
+            description = "Предоставляет все носители пользователя по статусу.")
+    public List<MediaResponse> getAllByStatusAndUser(@PathVariable("statusTitle") String statusTitle) {
+        return mediaMapper.toDto(mediaService.findAllByStatusAndUser(statusTitle));
+    }
 
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/count/all")
+    @Operation(summary = "Получить количество носителей.", description = "Предоставляет количество носителей.")
+    public ResponseEntity<Long> countAll() {
+        return ResponseEntity.ok(mediaService.countAll());
+    }
+
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/count/title/{title}")
+    @Operation(summary = "Получить количество носителей по названию.",
+            description = "Предоставляет количество носителей по названию.")
+    public ResponseEntity<Long> countTitle(@PathVariable("title") String title) {
+        return ResponseEntity.ok(mediaService.countTitle(title));
+    }
+
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/count/status/{title}")
+    @Operation(summary = "Получить количество носителей по названию статуса.",
+            description = "Предоставляет количество носителей по названию статуса.")
+    public ResponseEntity<Long> countStatusTitle(@PathVariable("title") String statusTitle) {
+        return ResponseEntity.ok(mediaService.countStatusTitle(statusTitle));
+    }
+
+    @CrossOrigin(origins = "http://localhost:8765")
+    @GetMapping("/count/category/{title}")
+    @Operation(summary = "Получить количество носителей по названию категории.",
+            description = "Предоставляет количество носителей по названию категории.")
+    public ResponseEntity<Long> countCategoryTitle(@PathVariable("title") String categoryTitle) {
+        return ResponseEntity.ok(mediaService.countCategoryTitle(categoryTitle));
+    }
 }

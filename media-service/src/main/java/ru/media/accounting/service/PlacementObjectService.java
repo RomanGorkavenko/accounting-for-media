@@ -3,7 +3,9 @@ package ru.media.accounting.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.media.accounting.dto.placement_object.PlacementObjectRequest;
+import ru.media.accounting.dto.placement_object.PlacementObjectRequestUpdate;
 import ru.media.accounting.exception.ElementAlreadyExistsException;
+import ru.media.accounting.model.Media;
 import ru.media.accounting.model.PlacementObject;
 import ru.media.accounting.repository.PlacementObjectRepository;
 
@@ -63,24 +65,46 @@ public class PlacementObjectService {
      * @param placementObjectRequest запрос на обновление объекта размещения.
      * @return объект размещения.
      */
-    public PlacementObject update(PlacementObjectRequest placementObjectRequest) {
-        PlacementObject placementObject = findByTitle(placementObjectRequest.getTitle());
-        placementObject.setTitle(placementObjectRequest.getTitle());
-        placementObject.setDescription(placementObjectRequest.getDescription());
+    public PlacementObject update(PlacementObjectRequestUpdate placementObjectRequest) {
+        if(repository.findByTitle(placementObjectRequest.getNewTitle()).isPresent()) {
+            throw new ElementAlreadyExistsException("Объект размещения уже существует");
+        }
+
+        PlacementObject placementObject = findByTitle(placementObjectRequest.getOldTitle());
+        placementObject.setTitle(placementObjectRequest.getNewTitle());
+        placementObject.setDescription(placementObjectRequest.getNewDescription());
+
         return repository.save(placementObject);
     }
 
     /**
      * Удалить объект размещения.
-     * @param placementObjectRequest запрос на удаление объекта размещения.
+     * @param placementObjectTitle запрос на удаление объекта размещения.
      * @throws ElementAlreadyExistsException если у объекта размещения есть носители информации.
      */
-    public void delete(PlacementObjectRequest placementObjectRequest) {
-        PlacementObject placementObject = findByTitle(placementObjectRequest.getTitle());
+    public void delete(String placementObjectTitle) {
+        PlacementObject placementObject = findByTitle(placementObjectTitle);
         if (placementObject.getMedias().isEmpty()) {
             repository.delete(placementObject);
         } else {
             throw new ElementAlreadyExistsException("У объекта размещения есть носители информации.");
         }
+    }
+
+    /**
+     * Получить список носителей информации для объекта размещения.
+     * @param placementObjectTitle название объекта размещения.
+     * @return список носителей информации для объекта размещения.
+     */
+    public List<Media> getMedias(String placementObjectTitle) {
+        List<Media> media = findByTitle(placementObjectTitle).getMedias()
+                .stream()
+                .toList();
+
+        if (media.isEmpty()) {
+            throw new NoSuchElementException("Носители информации не найдены");
+        }
+
+        return media;
     }
 }
