@@ -54,6 +54,7 @@ public class MediaController {
     @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить носитель.", description = "Обновляет носитель.")
+    @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUser(#mediaRequestUpdate.number)")
     public ResponseEntity<MediaResponse> update(@RequestBody MediaRequestUpdate mediaRequestUpdate) {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.update(mediaRequestUpdate)));
     }
@@ -71,6 +72,7 @@ public class MediaController {
     @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete/{number}")
     @Operation(summary = "Удалить носитель.", description = "Удаляет носитель.")
+    @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUser(#number)")
     public ResponseEntity<String> delete(@PathVariable("number") Long number) {
         mediaService.delete(number);
         return new ResponseEntity<>("Носитель с number = \"" + number + "\" успешно удален.", HttpStatus.OK);

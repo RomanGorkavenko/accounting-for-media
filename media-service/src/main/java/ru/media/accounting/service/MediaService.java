@@ -2,6 +2,7 @@ package ru.media.accounting.service;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -221,12 +222,7 @@ public class MediaService {
      * @return {@link Media} носитель.
      */
     public Media update(MediaRequestUpdate mediaRequestUpdate) {
-        if(mediaRepository.findByNumber(mediaRequestUpdate.getNumber()).isPresent()) {
-            throw new ElementAlreadyExistsException(
-                    "Носитель с номером " + mediaRequestUpdate.getNumber() + " уже существует");
-        }
-
-        Media media = findByNumberAndUserId(mediaRequestUpdate.getNumber());
+        Media media = findByNumber(mediaRequestUpdate.getNumber());
         Status status = statusService.findByTitle(mediaRequestUpdate.getStatusTitle());
         media.setTitle(mediaRequestUpdate.getTitle());
         media.setDescription(mediaRequestUpdate.getDescription());
@@ -241,7 +237,7 @@ public class MediaService {
      * @param number номер носителя.
      */
     public void delete(Long number) {
-        mediaRepository.delete(findByNumberAndUserId(number));
+        mediaRepository.delete(findByNumber(number));
     }
 
     /**

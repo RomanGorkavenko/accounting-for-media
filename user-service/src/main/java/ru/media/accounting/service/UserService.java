@@ -53,7 +53,7 @@ public class UserService {
         if(userRepository.findByUsername(userRequest.getUsername()).isPresent() ||
         userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new ElementAlreadyExistsException(
-                    "Пользователь с username = " + userRequest.getUsername() + " уже существует");
+                    "Пользователь уже существует");
         }
 
         User user = new User(userRequest.getUsername(), userRequest.getEmail(),

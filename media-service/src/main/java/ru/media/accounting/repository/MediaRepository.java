@@ -54,7 +54,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
             WHERE (:categoryTitle IS NULL
             OR :categoryTitle=''
             OR LOWER(m.category.title)
-            LIKE LOWER(concat('%', :statusTitle, '%')))
+            LIKE LOWER(concat('%', :categoryTitle, '%')))
             """)
     Optional<Long> countCategoryTitle(@Param("categoryTitle") String categoryTitle);
 }
