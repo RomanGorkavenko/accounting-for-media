@@ -11,12 +11,37 @@
 7. Дождаться пока все контейнеры в Docker запустятся, подождать еще немного пока все сервисы пройдут регистрацию.
 8. Ввести ссылку в адресной строке браузера
    - http://localhost:8765/webjars/swagger-ui/index.html
-![123](https://)
+   - Если на экране:
+   
+![1](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-13-53.png)
 
-git clone https://github.com/RomanGorkavenko/accounting-for-media.git
+   - Необходимо еще немного подождать.
+   - В итоге вы должны увидеть:
 
-cd .\accounting-for-media\
+![2](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-19-48.png)
 
-mvn clean package
+   - Переключение между сервисами в правом верхнем углу экрана.
 
-docker-compose up
+![3](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-31-34.png)
+
+   - Далее проходим авторизации и получаем токен.
+![4](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-35-27.png)
+
+![5](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-37-13.png)
+
+![6](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-38-02.png)
+
+   - Далее копируем токен, выделен на выделен на изображении выше. Нажимаем кнопку Authorize в правом верхнем углу экрана, в появившемся окне вставляем скопированный токен и жмем авторизоваться.
+![7](https://github.com/RomanGorkavenko/accounting-for-media/blob/master/image-for-readme/2024-03-25_12-39-33.png)
+
+   - Все готово, можно приступать к тестированию приложения.
+   - Авторизацию с помощью токена, необходимо проходить в каждом сервисе отдельно.
+   - Ссылки на API docs:
+     - Media Service URL
+       - http://localhost:8082/v3/api-docs
+     - User Service URL
+       - http://localhost:8081/v3/api-docs
+     - Eureka
+       - http://localhost:8761/
+
+
