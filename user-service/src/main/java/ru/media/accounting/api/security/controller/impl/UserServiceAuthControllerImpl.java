@@ -23,20 +23,17 @@ public class UserServiceAuthControllerImpl implements UserServiceAuthController 
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/login")
     public JwtResponse login(@RequestBody JwtRequest loginRequest) {
         return authService.login(loginRequest);
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/register")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
     public UserResponse register(@RequestBody UserRequest userRequest) {
         return userMapper.toDto(userService.save(userRequest));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping("/refresh")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     public JwtResponse refresh(@RequestBody String refreshToken) {

@@ -28,7 +28,6 @@ public class MediaController {
     private final MediaService mediaService;
     private final MediaMapper mediaMapper;
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get-title/{title}")
     @Operation(summary = "Получить носитель по названию.",
             description = "Предоставляет носитель по названию.")
@@ -36,7 +35,6 @@ public class MediaController {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.findByTitle(mediaTitle)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get-number/{number}")
     @Operation(summary = "Получить носитель по номеру.",
             description = "Предоставляет носитель по номеру.")
@@ -44,14 +42,12 @@ public class MediaController {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.findByNumber(number)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping()
     @Operation(summary = "Добавить носитель.", description = "Добавляет носитель.")
     public ResponseEntity<MediaResponse> save(@RequestBody MediaRequest mediaRequest) {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.add(mediaRequest)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить носитель.", description = "Обновляет носитель.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUser(#mediaRequestUpdate.number)")
@@ -59,7 +55,6 @@ public class MediaController {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.update(mediaRequestUpdate)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update/{number}/{username}")
     @Operation(summary = "Передать носитель другому пользователю.",
             description = "Передает носитель другому пользователю. Только для администратора.")
@@ -69,7 +64,6 @@ public class MediaController {
         return ResponseEntity.ok(mediaMapper.toDto(mediaService.changeUser(number, username)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete/{number}")
     @Operation(summary = "Удалить носитель.", description = "Удаляет носитель.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUser(#number)")
@@ -78,7 +72,6 @@ public class MediaController {
         return new ResponseEntity<>("Носитель с number = \"" + number + "\" успешно удален.", HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/user/{username}")
     @Operation(summary = "Получить все носители пользователя по его имени.",
                 description = "Предоставляет все носители пользователя по его имени. " +
@@ -93,7 +86,6 @@ public class MediaController {
         return mediaMapper.toDto(mediaService.findByUsername(username));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     @Operation(summary = "Получить все носители.",
@@ -102,7 +94,6 @@ public class MediaController {
         return mediaMapper.toDto(mediaService.findAll());
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/user/all")
     @Operation(summary = "Получить все носители пользователя.",
             description = "Предоставляет все носители пользователя.")
@@ -110,7 +101,6 @@ public class MediaController {
         return mediaMapper.toDto(mediaService.findAllByUser());
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/category/{categoryTitle}")
     @Operation(summary = "Получить все носители пользователя по категории с сортировкой по статусу.",
             description = "Предоставляет все носители пользователя по категории с сортировкой по статусу.")
@@ -118,7 +108,6 @@ public class MediaController {
         return mediaMapper.toDto(mediaService.findAllByCategoryAndUser(categoryTitle));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/status/{statusTitle}")
     @Operation(summary = "Получить все носители пользователя по статусу.",
             description = "Предоставляет все носители пользователя по статусу.")
@@ -126,14 +115,12 @@ public class MediaController {
         return mediaMapper.toDto(mediaService.findAllByStatusAndUser(statusTitle));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/count/all")
     @Operation(summary = "Получить количество носителей.", description = "Предоставляет количество носителей.")
     public ResponseEntity<Long> countAll() {
         return ResponseEntity.ok(mediaService.countAll());
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/count/title/{title}")
     @Operation(summary = "Получить количество носителей по названию.",
             description = "Предоставляет количество носителей по названию.")
@@ -141,7 +128,6 @@ public class MediaController {
         return ResponseEntity.ok(mediaService.countTitle(title));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/count/status/{title}")
     @Operation(summary = "Получить количество носителей по названию статуса.",
             description = "Предоставляет количество носителей по названию статуса.")
@@ -149,7 +135,6 @@ public class MediaController {
         return ResponseEntity.ok(mediaService.countStatusTitle(statusTitle));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/count/category/{title}")
     @Operation(summary = "Получить количество носителей по названию категории.",
             description = "Предоставляет количество носителей по названию категории.")

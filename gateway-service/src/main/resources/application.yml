@@ -15,19 +15,36 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: user-service
+        - id: user
           uri: lb://user-service
           predicates:
             - Path=/user/**
           filters:
             - RewritePath=/user/(?<path>.*), /$\{path}
 
-        - id: media-service
+        - id: media
           uri: lb://media-service
           predicates:
             - Path=/media/**
           filters:
             - RewritePath=/media/(?<path>.*), /$\{path}
+
+
+        - id: api-user
+          uri: lb://user-service
+          predicates:
+            - Path=/api/user/**
+
+        - id: api-media
+          uri: lb://media-service
+          predicates:
+            - Path=/api/media/**
+
+        - id: api-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/api/auth/**
+
 
 springdoc:
   api-docs:

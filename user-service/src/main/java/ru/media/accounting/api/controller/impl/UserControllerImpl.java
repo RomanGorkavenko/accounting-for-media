@@ -28,7 +28,6 @@ public class UserControllerImpl implements UserController {
     private final UserMapper userMapper;
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/name/{username}")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUser(#username)")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable("username") String username) {
@@ -37,7 +36,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/mail/{email}")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserByEmail(#email)")
     public ResponseEntity<UserResponse> findByEmail(@PathVariable("email") String email) {
@@ -46,7 +44,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequest.username)")
     public ResponseEntity<UserResponse> save(@RequestBody UserRequest userRequest) {
@@ -55,7 +52,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#userRequestUpdate.username)")
     public ResponseEntity<UserResponse> update(@RequestBody UserRequestUpdate userRequestUpdate) {
@@ -64,7 +60,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete/{username}")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN(#username)")
     public ResponseEntity<String> delete(@PathVariable("username") String username) {
@@ -73,7 +68,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
     @PreAuthorize("@userServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
     public List<UserResponse> findAll() {

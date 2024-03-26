@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "Http://localhost:8082", description = "Media Service URL")
+                @Server(url = "Http://localhost:8765", description = "Media Service URL")
         }
 )
 @EnableDiscoveryClient

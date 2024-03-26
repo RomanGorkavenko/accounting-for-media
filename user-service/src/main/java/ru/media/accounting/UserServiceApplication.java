@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "Http://localhost:8081", description = "User Service URL")
+                @Server(url = "Http://localhost:8765", description = "User Service URL")
         }
 )
 public class UserServiceApplication {
