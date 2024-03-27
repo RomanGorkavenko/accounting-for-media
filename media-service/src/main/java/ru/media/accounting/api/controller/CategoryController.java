@@ -19,35 +19,31 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Timer
-@RequestMapping("/api/category")
+@RequestMapping("/api/media/category")
 @Tag(name = "Категории.", description = "API для работы с категориями.")
 public class CategoryController {
 
     private final CategoryService service;
     private final CategoryMapper mapper;
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get/{title}")
     @Operation(summary = "Получить категорию по названию.", description = "Предоставляет категорию по названию.")
     public ResponseEntity<CategoryResponse> getCategoryByTitle(@PathVariable("title") String title) {
         return ResponseEntity.ok(mapper.toDto(service.findByTitle(title)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
     @Operation(summary = "Получить все категории.", description = "Предоставляет все категории.")
     public ResponseEntity<List<CategoryResponse>> getCategories() {
         return ResponseEntity.ok(mapper.toDto(service.findAll()));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping()
     @Operation(summary = "Создать новую категорию.", description = "Создает новую категорию.")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
         return ResponseEntity.ok(mapper.toDto(service.save(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить категорию.", description = "Обновляет категорию.")
     public ResponseEntity<CategoryResponse> updateCategory(
@@ -55,7 +51,6 @@ public class CategoryController {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete")
     @Operation(summary = "Удалить категорию.",
             description = "Удаляет категорию. Только для администратора." +

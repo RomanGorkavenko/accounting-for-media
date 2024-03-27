@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Timer
-@RequestMapping("/api/placement-object")
+@RequestMapping("/api/media/placement-object")
 @Tag(name = "Объект размещения", description = "API для работы с объектами размещения")
 public class PlacementObjectController {
 
@@ -29,7 +29,6 @@ public class PlacementObjectController {
     private final PlacementObjectMapper mapper;
     private final MediaMapper mediaMapper;
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get/{title}")
     @Operation(summary = "Получить объект размещения по названию.",
             description = "Предоставляет объект размещения по названию.")
@@ -37,14 +36,12 @@ public class PlacementObjectController {
         return ResponseEntity.ok(mapper.toDto(service.findByTitle(title)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
     @Operation(summary = "Получить объекты размещения.", description = "Предоставляет объекты размещения.")
     public ResponseEntity<List<PlacementObjectResponse>> getPlacementObjects() {
         return ResponseEntity.ok(mapper.toDto(service.findAll()));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping()
     @Operation(summary = "Создать новый объект размещения.",
             description = "Создает новый объект размещения. Только для администратора.")
@@ -53,7 +50,6 @@ public class PlacementObjectController {
         return ResponseEntity.ok(mapper.toDto(service.save(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить объект размещения.",
             description = "Обновляет объект размещения. Только для администратора.")
@@ -63,7 +59,6 @@ public class PlacementObjectController {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete/{title}")
     @Operation(summary = "Удалить объект размещения.",
             description = "Удаляет объект размещения с указанным названием. Только для администратора." +
@@ -74,7 +69,6 @@ public class PlacementObjectController {
         return new ResponseEntity<>("Объект размещения" + title + " удален.", HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/{title}/media")
     @Operation(summary = "Получить носители объекта размещения.",
             description = "Предоставляет носители объекта размещения.")

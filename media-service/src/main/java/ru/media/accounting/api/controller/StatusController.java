@@ -19,28 +19,25 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Timer
-@RequestMapping("/api/status")
+@RequestMapping("/api/media/status")
 @Tag(name = "Статусы", description = "API для работы с статусами")
 public class StatusController {
 
     private final StatusService service;
     private final StatusMapper mapper;
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/get/{title}")
     @Operation(summary = "Получить статус по названию.", description = "Предоставляет статус по названию.")
     public ResponseEntity<StatusResponse> getStatusByTitle(@PathVariable("title") String title) {
         return ResponseEntity.ok(mapper.toDto(service.findByTitle(title)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @GetMapping("/all")
     @Operation(summary = "Получить все статусы.", description = "Предоставляет все статусы.")
     public ResponseEntity<List<StatusResponse>> getStatuses() {
         return ResponseEntity.ok(mapper.toDto(service.findAll()));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PostMapping()
     @Operation(summary = "Создать новый статус.",
             description = "Создает новый статус. Только для администратора.")
@@ -49,7 +46,6 @@ public class StatusController {
         return ResponseEntity.ok(mapper.toDto(service.save(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @PutMapping("/update")
     @Operation(summary = "Обновить статус.", description = "Обновляет статус. Только для администратора.")
     @PreAuthorize("@mediaServiceCustomSecurityExpression.canAccessUserROLE_ADMIN()")
@@ -57,7 +53,6 @@ public class StatusController {
         return ResponseEntity.ok(mapper.toDto(service.update(request)));
     }
 
-    @CrossOrigin(origins = "http://localhost:8765")
     @DeleteMapping("/delete/{title}")
     @Operation(summary = "Удалить статус.",
             description = "Удаляет статус с указанным названием. Только для администратора." +
