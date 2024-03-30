@@ -46,6 +46,8 @@ spring:
             - Path=/api/media/**
 
 springdoc:
+  webjars:
+    prefix: /media-accounting
   api-docs:
     enabled: true
   swagger-ui:
