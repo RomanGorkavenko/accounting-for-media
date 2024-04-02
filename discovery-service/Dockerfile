@@ -13,7 +13,7 @@ COPY /pom.xml /media-service/
 COPY /src /gateway-service/src
 COPY /pom.xml /gateway-service/
 COPY pom.xml /
-RUN mvn -f /pom.xml clean package
+RUN mvn -f /pom.xml package
 
 FROM openjdk:17-jdk-slim AS discovery-service
 WORKDIR /
