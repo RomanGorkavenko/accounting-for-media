@@ -26,9 +26,11 @@ jobs:
       - name: "Build&Deploy discovery-service"
         uses: docker/build-push-action@v5
         with:
+          context: ./discovery-service
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/discovery-service:latest
+
+            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:latest
 
 
       - name: "Build&Deploy media-service"
