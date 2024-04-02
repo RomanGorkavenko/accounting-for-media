@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v3
         with:
-          distribution: 'timurin'
+          distribution: 'temurin'
           java-version: 17
       - uses: actions/cache@v3
         with:
