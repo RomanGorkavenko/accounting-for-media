@@ -1,23 +1,86 @@
 name: docker image ci
 on:
-  push:
-    branches: [ "master" ]
+  release:
+    types: [ published ]
+    workflow_dispatch:
 
 jobs:
-  build-docker-image:
-    runs-on: ubuntu-20.04
+  build:
+    name: 'Build & Publish'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker/login-action@v2
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up QEMU"
+        uses: docker/setup-qemu-action@v3
+
+      - name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Login to GitHub Registry"
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: docker/setup-buildx-action@v2
-      - uses: mr-smithers-excellent/docker-build-push@v5
+
+      - name: "Build&Deploy discovery-service"
+        uses: docker/build-push-action@v5
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media
-          tags: 0.0.$GITHUB_RUN_NUMBER, latest
-          dockerfile: Dockerfile
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:latest
+          build-args: |
+            build_mode=Release
+
+      - name: "Build&Deploy media-service"
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/media-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/media-service:latest
+          build-args: |
+            build_mode=Release
+
+      - name: "Build&Deploy user-service"
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+          build-args: |
+            build_mode=Release
+
+      - name: "Build&Deploy gateway-service"
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:latest
+          build-args: |
+            build_mode=Release
+
+      - name: "Build&Deploy nginx-service"
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:latest
+          build-args: |
+            build_mode=Release
+
+      - name: "Run deploy on server"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            sudo docker-compose -f docker-compose.prod-ci.yml -p prod pull
+            sudo docker-compose -f docker-compose.prod-ci.yml -p prod up -d
