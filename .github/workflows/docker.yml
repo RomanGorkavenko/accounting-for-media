@@ -28,8 +28,8 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/discovery-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/discovery-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:latest
 
 
       - name: "Build&Deploy media-service"
@@ -37,8 +37,8 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/media-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/media-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/media-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/media-service:latest
 
 
       - name: "Build&Deploy user-service"
@@ -46,8 +46,8 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/user-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/user-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
 
 
       - name: "Build&Deploy gateway-service"
@@ -55,16 +55,16 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/gateway-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/gateway-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:latest
 
       - name: "Build&Deploy nginx-service"
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/nginx-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/nginx-service:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:latest
 
 
       - name: "Run deploy on server"
