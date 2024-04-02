@@ -26,7 +26,7 @@ jobs:
       - name: "Build&Deploy discovery-service"
         uses: docker/build-push-action@v5
         with:
-          context: ./discovery-service
+          context: "{{defaultContext}}:./server.Dockerfile"
           push: true
           tags: |
 
