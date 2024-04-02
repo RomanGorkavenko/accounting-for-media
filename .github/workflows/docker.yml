@@ -28,7 +28,6 @@ jobs:
         with:
           push: true
           tags: |
-#            ${{ secrets.DOCKERHUB_USERNAME }}/discovery-service:0.0.$GITHUB_RUN_NUMBER
             ${{ secrets.DOCKERHUB_USERNAME }}/accounting-for-media/discovery-service:latest
 
 
