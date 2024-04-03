@@ -78,6 +78,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
           port: ${{ secrets.SERVER_PORT }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             sudo docker-compose -f docker-compose.prod-ci.yml -p prod pull
             sudo docker-compose -f docker-compose.prod-ci.yml -p prod up -d
