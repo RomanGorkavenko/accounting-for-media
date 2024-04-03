@@ -20,19 +20,3 @@ WORKDIR /
 COPY --from=build /discovery-service/target/*.jar application.jar
 EXPOSE 8761
 ENTRYPOINT ["java","-jar","application.jar"]
-
-FROM openjdk:17-jdk-slim AS user-service
-WORKDIR /
-COPY --from=build /user-service/target/*.jar application.jar
-ENTRYPOINT ["java","-jar","application.jar"]
-
-FROM openjdk:17-jdk-slim AS media-service
-WORKDIR /
-COPY --from=build /media-service/target/*.jar application.jar
-ENTRYPOINT ["java","-jar","application.jar"]
-
-FROM openjdk:17-jdk-slim AS gateway-service
-WORKDIR /
-COPY --from=build /gateway-service/target/*.jar application.jar
-EXPOSE 8765
-ENTRYPOINT ["java","-jar","application.jar"]

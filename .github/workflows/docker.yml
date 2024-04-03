@@ -26,7 +26,7 @@ jobs:
       - name: "Build&Deploy discovery-service"
         uses: docker/build-push-action@v5
         with:
-
+          file: ./server.Dockerfile
           push: true
           tags: |
 
@@ -36,9 +36,10 @@ jobs:
       - name: "Build&Deploy media-service"
         uses: docker/build-push-action@v5
         with:
+          file: ./server.Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/media-service:${{ github.event.release.tag_name }}
+            
             ${{ secrets.DOCKERHUB_USERNAME }}/media-service:latest
 
 
@@ -59,13 +60,13 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:${{ github.event.release.tag_name }}
             ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:latest
 
-      - name: "Build&Deploy nginx-service"
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:${{ github.event.release.tag_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:latest
+#      - name: "Build&Deploy nginx-service"
+#        uses: docker/build-push-action@v5
+#        with:
+#          push: true
+#          tags: |
+#            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:${{ github.event.release.tag_name }}
+#            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:latest
 
 
       - name: "Run deploy on server"
