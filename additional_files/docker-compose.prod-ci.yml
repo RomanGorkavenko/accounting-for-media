@@ -1,17 +1,5 @@
 
 services:
-  nginx:
-    container_name: nginx
-    image: nginx:stable
-    restart: always
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - web-root:/var/www/html
-    networks:
-      - app-network
-
 
   server:
     image: romangorkavenko/discovery-service:latest
@@ -21,8 +9,6 @@ services:
     restart: always
     ports:
       - '8761:8761'
-    networks:
-      - app-network
 
 
   postgres_media_service:
@@ -37,8 +23,6 @@ services:
     ports:
       - "5433:5432"
     restart: always
-    networks:
-      - app-network
 
   postgres_user_service:
     image: postgres:15.6-alpine3.19
@@ -52,8 +36,6 @@ services:
     ports:
       - "5434:5432"
     restart: always
-    networks:
-      - app-network
 
   client_media_service:
     image: romangorkavenko/media-service:latest
@@ -66,8 +48,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=mediadata
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
     restart: always
-    networks:
-      - app-network
 
   client_user_service:
     image: romangorkavenko/user-service:latest
@@ -80,27 +60,13 @@ services:
       - SPRING_DATASOURCE_PASSWORD=userdata
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
     restart: always
-    networks:
-      - app-network
-
 
   gateway:
     image: romangorkavenko/gateway-service:latest
     container_name: gateway-service
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
-      - SERVER_PORT=8765
-    expose:
-      - '8765'
-    depends_on:
-      - nginx
+    ports:
+      - '8765:8765'
     restart: always
-    networks:
-      - app-network
 
-volumes:
-  web-root:
-
-networks:
-  app-network:
-    driver: bridge
