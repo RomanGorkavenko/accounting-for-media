@@ -15,7 +15,7 @@ COPY /gateway-service/pom.xml /gateway-service/
 COPY pom.xml /
 RUN mvn -f /pom.xml clean package
 
-FROM openjdk:17-jdk-slim AS user-service
+FROM openjdk:17-jdk-slim
 WORKDIR /
 COPY --from=build /user-service/target/*.jar application.jar
 ENTRYPOINT ["java","-jar","application.jar"]
