@@ -18,5 +18,4 @@ RUN mvn -f /pom.xml clean package
 FROM openjdk:17-jdk-slim AS discovery-service
 WORKDIR /
 COPY --from=build /discovery-service/target/*.jar application.jar
-EXPOSE 8761
 ENTRYPOINT ["java","-jar","application.jar"]

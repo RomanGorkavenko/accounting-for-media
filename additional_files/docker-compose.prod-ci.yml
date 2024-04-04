@@ -1,16 +1,19 @@
-version: "3.9"
 
 services:
   server:
     image: romangorkavenko/discovery-service:latest
     container_name: discovery-service
+    depends_on:
+      - nginx
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SERVER_PORT=8761
     restart: always
-    ports:
-      - '8761:8761'
+    expose:
+      - '8761'
     networks:
-      template_network:
+      - app-network
+
 
   postgres_media_service:
     image: postgres:15.6-alpine3.19
@@ -25,7 +28,8 @@ services:
       - "5433:5432"
     restart: always
     networks:
-      template_network:
+      - app-network
+
 
   postgres_user_service:
     image: postgres:15.6-alpine3.19
@@ -40,13 +44,14 @@ services:
       - "5434:5432"
     restart: always
     networks:
-      template_network:
+      - app-network
 
   client_media_service:
     image: romangorkavenko/media-service:latest
     container_name: media-service
     depends_on:
       - postgres_media_service
+      - nginx
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_media_service/media_db?currentSchema=media
       - SPRING_DATASOURCE_USERNAME=mediadata
@@ -54,13 +59,14 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
     restart: always
     networks:
-      template_network:
+      - app-network
 
   client_user_service:
     image: romangorkavenko/user-service:latest
     container_name: user-service
     depends_on:
       - postgres_user_service
+      - nginx
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_user_service/users_db?currentSchema=users_data
       - SPRING_DATASOURCE_USERNAME=userdata
@@ -68,29 +74,38 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
     restart: always
     networks:
-      template_network:
+      - app-network
 
   gateway:
     image: romangorkavenko/gateway-service:latest
     container_name: gateway-service
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
-    ports:
-      - '8765:8765'
+      - SERVER_PORT=8765
+    expose:
+      - '8765'
+    depends_on:
+      - nginx
     restart: always
     networks:
-      template_network:
+      - app-network
 
-#  nginx:
-#    image: romangorkavenko/accounting-for-media/nginx-service:latest
-#    restart: always
-#    container_name: nginx-service
-#    networks:
-#      template-network:
-#    depends_on:
-#      - gateway
-#    ports:
-#      - "90:80"
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - web-root:/var/www/html
+    networks:
+      - app-network
+
+volumes:
+  web-root:
 
 networks:
-  template-network:
+  app-network:
+    driver: bridge

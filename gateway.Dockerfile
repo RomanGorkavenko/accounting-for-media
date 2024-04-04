@@ -18,5 +18,4 @@ RUN mvn -f /pom.xml clean package
 FROM openjdk:17-jdk-slim AS gateway-service
 WORKDIR /
 COPY --from=build /gateway-service/target/*.jar application.jar
-EXPOSE 8765
 ENTRYPOINT ["java","-jar","application.jar"]
