@@ -62,14 +62,6 @@ jobs:
 
             ${{ secrets.DOCKERHUB_USERNAME }}/gateway-service:latest
 
-#      - name: "Build&Deploy nginx-service"
-#        uses: docker/build-push-action@v5
-#        with:
-#          push: true
-#          tags: |
-#            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:${{ github.event.release.tag_name }}
-#            ${{ secrets.DOCKERHUB_USERNAME }}/nginx-service:latest
-
 
       - name: "Run deploy on server"
         uses: appleboy/ssh-action@master
