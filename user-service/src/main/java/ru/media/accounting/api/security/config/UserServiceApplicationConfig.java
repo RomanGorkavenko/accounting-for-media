@@ -80,6 +80,7 @@ public class UserServiceApplicationConfig {
                         .version("1.0")
                         .contact(new Contact()
                                 .name("Roman Gorkavenko")
+                                .url("https://github.com/RomanGorkavenko/accounting-for-media")
                                 .email("roman@gorkavenko.ru"))
                 );
     }
