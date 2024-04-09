@@ -37,5 +37,6 @@ aspect:
     log-level: warn
 
 serverurl:
-  url: http://localhost:8765
-  description: Media Service local
+  url: http://accounting-for-media.ru
+  description: Media Service server
+

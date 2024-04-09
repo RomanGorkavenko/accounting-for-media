@@ -26,6 +26,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.media.accounting.api.security.MediaServiceJwtTokenFilter;
 import ru.media.accounting.api.security.MediaServiceJwtTokenProvider;
+import ru.media.accounting.props.PropertyServerOpenApi;
+
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ import java.util.List;
 public class MediaServiceApplicationConfig {
 
     private final MediaServiceJwtTokenProvider tokenProvider;
+    private final PropertyServerOpenApi configurationServer;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,9 +63,10 @@ public class MediaServiceApplicationConfig {
                                                 .bearerFormat("JWT")
                                 )
                 )
-                .servers(List.of(new Server()
-                        .url("http://accounting-for-media.ru")
-                        .description("Media Service URL")))
+                .servers(List.of(
+                        new Server()
+                                .url(configurationServer.getUrl())
+                                .description(configurationServer.getDescription())))
                 .info(new Info()
                         .title("Accounting for Media list Media API")
                         .description("Spring boot cloud application")

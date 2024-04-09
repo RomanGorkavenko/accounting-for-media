@@ -3,20 +3,20 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:55323/media_db?currentSchema=media
-    username: mediadata
-    password: mediadata
+    url: jdbc:postgresql://localhost:55322/users_db?currentSchema=users_data
+    username: userdata
+    password: userdata
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
   application:
-    name: media-service
+    name: user-service
   liquibase:
     change-log: classpath:/liquibase/db.changelog.yml
     enabled: true
-    default-schema: media
+    default-schema: users_data
 
 security:
   jwt:
