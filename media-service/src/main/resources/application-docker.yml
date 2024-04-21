@@ -5,3 +5,4 @@ spring:
       uri: ${CONFIG_SERVER_URL_DOCKER}
   config:
     import: configserver:${CONFIG_SERVER_URL_DOCKER}
+

@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  postgres-media:
+    image: postgres:15.6-alpine3.19
+    container_name: media-postgres
+    environment:
+      POSTGRES_DB: ${MEDIA_DB}
+      POSTGRES_USER: ${MEDIA_DB_USERNAME}
+      POSTGRES_PASSWORD: ${MEDIA_DB_PASSWORD}
+    ports:
+      - "55323:5432"
+
+  postgres-user:
+    image: postgres:15.6-alpine3.19
+    container_name: user-postgres
+    environment:
+      POSTGRES_DB: ${USER_DB}
+      POSTGRES_USER: ${USER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
+    ports:
+      - "55322:5432"

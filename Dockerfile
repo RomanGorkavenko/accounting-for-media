@@ -6,6 +6,8 @@ COPY /entity-service/src /entity-service/src
 COPY /entity-service/pom.xml /entity-service/
 COPY /discovery-service/src /discovery-service/src
 COPY /discovery-service/pom.xml /discovery-service/
+COPY /config-service/src /config-service/src
+COPY /config-service/pom.xml /config-service/
 COPY /user-service/src /user-service/src
 COPY /user-service/pom.xml /user-service/
 COPY /media-service/src /media-service/src
@@ -14,6 +16,12 @@ COPY /gateway-service/src /gateway-service/src
 COPY /gateway-service/pom.xml /gateway-service/
 COPY pom.xml /
 RUN mvn -f /pom.xml clean package
+
+FROM openjdk:17-jdk-slim AS config-service
+WORKDIR /
+COPY --from=build /config-service/target/*.jar application.jar
+EXPOSE 8888
+ENTRYPOINT ["java","-jar","application.jar"]
 
 FROM openjdk:17-jdk-slim AS discovery-service
 WORKDIR /

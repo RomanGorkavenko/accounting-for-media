@@ -6,6 +6,8 @@ COPY /entity-service/src /entity-service/src
 COPY /entity-service/pom.xml /entity-service/
 COPY /discovery-service/src /discovery-service/src
 COPY /discovery-service/pom.xml /discovery-service/
+COPY /config-service/src /config-service/src
+COPY /config-service/pom.xml /config-service/
 COPY /user-service/src /user-service/src
 COPY /user-service/pom.xml /user-service/
 COPY /media-service/src /media-service/src

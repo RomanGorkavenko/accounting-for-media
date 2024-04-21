@@ -23,6 +23,7 @@
         <module>entity-service</module>
         <module>media-service</module>
         <module>spring-boot-starter-timer</module>
+        <module>config-service</module>
     </modules>
 
     <properties>

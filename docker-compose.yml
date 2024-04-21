@@ -1,13 +1,23 @@
 version: "3.9"
 
 services:
+  config-service:
+    build:
+      context: .
+      target: config-service
+    container_name: config-service
+    restart: always
+    ports:
+      - '8888:8888'
+
   server:
     build:
       context: .
       target: discovery-service
     container_name: discovery-service
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
     ports:
       - '8761:8761'
 
@@ -15,11 +25,9 @@ services:
     image: postgres:15.6-alpine3.19
     container_name: media_db
     environment:
-      POSTGRES_DB: "media_db"
-      POSTGRES_USER: "mediadata"
-      POSTGRES_PASSWORD: "mediadata"
-    volumes:
-      - .\media-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
+      POSTGRES_DB: ${MEDIA_DB}
+      POSTGRES_USER: ${MEDIA_DB_USERNAME}
+      POSTGRES_PASSWORD: ${MEDIA_DB_PASSWORD}
     ports:
       - "5433:5432"
 
@@ -27,11 +35,9 @@ services:
     image: postgres:15.6-alpine3.19
     container_name: users_db
     environment:
-      POSTGRES_DB: "users_db"
-      POSTGRES_USER: "userdata"
-      POSTGRES_PASSWORD: "userdata"
-    volumes:
-      - .\user-service\src\main\resources\db-init:/docker-entrypoint-initdb.d
+      POSTGRES_DB: ${USER_DB}
+      POSTGRES_USER: ${USER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
     ports:
       - "5434:5432"
 
@@ -40,26 +46,22 @@ services:
       context: .
       target: media-service
     container_name: media-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker, resource
     depends_on:
       - postgres_media_service
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_media_service/media_db?currentSchema=media
-      - SPRING_DATASOURCE_USERNAME=mediadata
-      - SPRING_DATASOURCE_PASSWORD=mediadata
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+    restart: always
 
   client_user_service:
     build:
       context: .
       target: user-service
     container_name: user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker, resource
     depends_on:
       - postgres_user_service
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_user_service/users_db?currentSchema=users_data
-      - SPRING_DATASOURCE_USERNAME=userdata
-      - SPRING_DATASOURCE_PASSWORD=userdata
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+    restart: always
 
   gateway:
     build:
@@ -67,6 +69,7 @@ services:
       target: gateway-service
     container_name: gateway-service
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
     ports:
       - '8765:8765'
