@@ -3,9 +3,4 @@ spring:
     config:
       server:
         git:
-          uri: ${URI_GIT}
-          clone-on-start: true
-          basedir: ${LOCAL_DIR}
-          username: ${USERNAME_GIT}
-          password: ${PASSWORD_GIT}
-          default-label: ${BRANCH}
+          uri: https://github.com/RomanGorkavenko/prop-accounting-for-media.git

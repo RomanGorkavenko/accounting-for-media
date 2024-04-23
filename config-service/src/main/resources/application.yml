@@ -8,3 +8,9 @@ spring:
     config:
       server:
         bootstrap: true
+        git:
+          clone-on-start: true
+          basedir: ${LOCAL_DIR}
+          username: ${USERNAME_GIT}
+          password: ${PASSWORD_GIT}
+          default-label: ${BRANCH}
