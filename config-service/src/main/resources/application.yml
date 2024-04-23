@@ -4,13 +4,3 @@ server:
 spring:
   application:
     name: config-service
-  cloud:
-    config:
-      server:
-        git:
-          uri: ${URI_GIT}
-          clone-on-start: true
-          basedir: ${LOCAL_DIR}
-          username: ${USERNAME_GIT}
-          password: ${PASSWORD_GIT}
-          default-label: ${BRANCH}
