@@ -6,6 +6,8 @@ services:
       context: .
       target: config-service
     container_name: config-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     restart: always
     ports:
       - '8888:8888'
