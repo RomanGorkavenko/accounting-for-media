@@ -1,5 +1,7 @@
 
 eureka:
   client:
+    eureka-server-read-timeout-seconds: 240
+    eureka-server-connect-timeout-seconds: 240
     service-url:
       defaultZone: http://discovery-service:8761/eureka
