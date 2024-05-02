@@ -2,6 +2,6 @@
 spring:
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URL_DOCKER}
+      uri: ${CONFIG_SERVER_URL_SERVER}
   config:
-    import: configserver:${CONFIG_SERVER_URL_DOCKER}
+    import: configserver:${CONFIG_SERVER_URL_SERVER}

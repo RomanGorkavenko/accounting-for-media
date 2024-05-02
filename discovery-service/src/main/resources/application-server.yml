@@ -2,6 +2,6 @@
 spring:
   cloud:
     config:
-      uri: http://config-service:8888
+      uri: ${CONFIG_SERVER_URL_SERVER}
   config:
-    import: configserver:http://config-service:8888
+    import: configserver:${CONFIG_SERVER_URL_SERVER}
