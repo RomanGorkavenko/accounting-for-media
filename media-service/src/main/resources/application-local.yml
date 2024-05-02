@@ -1,0 +1,7 @@
+
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URL_LOCAL}
+  config:
+    import: configserver:${CONFIG_SERVER_URL_LOCAL}

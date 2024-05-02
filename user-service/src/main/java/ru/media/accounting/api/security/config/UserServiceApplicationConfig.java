@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.media.accounting.api.security.UserServiceJwtTokenFilter;
 import ru.media.accounting.api.security.UserServiceJwtTokenProvider;
+import ru.media.accounting.props.PropertyServerOpenApi;
+
+import java.util.List;
 
 /**
  * Конфигурация Spring Security, OpenApi.
@@ -36,6 +40,7 @@ import ru.media.accounting.api.security.UserServiceJwtTokenProvider;
 public class UserServiceApplicationConfig {
 
     private final UserServiceJwtTokenProvider tokenProvider;
+    private final PropertyServerOpenApi configurationServer;
 
     /**
      * Кодировка пароля.
@@ -74,12 +79,17 @@ public class UserServiceApplicationConfig {
                                                 .bearerFormat("JWT")
                                 )
                 )
+                .servers(List.of(
+                        new Server()
+                                .url(configurationServer.getUrl())
+                                .description(configurationServer.getDescription())))
                 .info(new Info()
                         .title("Accounting for Media list User API")
                         .description("Spring boot cloud application")
                         .version("1.0")
                         .contact(new Contact()
                                 .name("Roman Gorkavenko")
+                                .url("https://github.com/RomanGorkavenko/accounting-for-media")
                                 .email("roman@gorkavenko.ru"))
                 );
     }
