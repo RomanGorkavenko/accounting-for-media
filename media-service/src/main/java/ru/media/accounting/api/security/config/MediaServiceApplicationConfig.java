@@ -99,6 +99,7 @@ public class MediaServiceApplicationConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/v3/api-docs/swagger-config/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new MediaServiceJwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
